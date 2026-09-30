@@ -28,6 +28,8 @@ A gate that has not been run is not passed. No gate is waived on request.
 
 ## Install
 
+**In a hurry? [QUICKSTART.md](QUICKSTART.md) is the copy-paste version.**
+
 Pick one. All four give you the same skills and commands.
 
 **As a plugin (recommended)** — in Claude Code:
