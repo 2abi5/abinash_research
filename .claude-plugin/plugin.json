@@ -1,0 +1,30 @@
+{
+  "name": "abinash-research",
+  "version": "1.0.0",
+  "description": "Senior-researcher paper production suite: story architecture, systematic literature review, drafting, figure design, citation integrity verification, prose-quality editing, venue compliance against top conferences and journals, adversarial review, and a gated submission-readiness score.",
+  "author": {
+    "name": "Abinash Panta"
+  },
+  "homepage": "https://github.com/2abi5/abinash_research",
+  "repository": "https://github.com/2abi5/abinash_research",
+  "license": "MIT",
+  "keywords": [
+    "research",
+    "academic-writing",
+    "paper",
+    "peer-review",
+    "literature-review",
+    "citations",
+    "latex",
+    "neurips",
+    "icml",
+    "iclr",
+    "cvpr",
+    "acl"
+  ],
+  "skills": [
+    "./skills/research-pro",
+    "./skills/paper-reviewer"
+  ],
+  "commands": "./commands"
+}

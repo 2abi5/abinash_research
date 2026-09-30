@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+
+# Working output from the skills (keep the repo to the skills themselves)
+/paper/
+/out/
+*.local.json
+*.local.yaml
+
+# OS
+.DS_Store
+Thumbs.db

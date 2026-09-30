@@ -1,0 +1,64 @@
+{
+  "n_exemplars": 1,
+  "sources": [
+    "exemplar1.tex"
+  ],
+  "total_words": 412,
+  "figures_total": 2,
+  "tables_total": 1,
+  "equations_total": 1,
+  "citations_total": 9,
+  "abstract_words": 61,
+  "sentence_len_mean": 11.8,
+  "sentence_len_stdev": 5.3,
+  "first_person_per_100w": 3.2,
+  "passive_markers_per_100w": 0.0,
+  "hedges_per_100w": 0.2,
+  "citations_per_1000w": 21.8,
+  "section_order": [
+    "abstract",
+    "intro",
+    "related",
+    "method",
+    "experiments",
+    "conclusion"
+  ],
+  "sections": {
+    "abstract": {
+      "share_pct": 14.8,
+      "present_in": "1/1",
+      "figures": 0,
+      "citations": 0
+    },
+    "intro": {
+      "share_pct": 23.8,
+      "present_in": "1/1",
+      "figures": 1,
+      "citations": 2
+    },
+    "related": {
+      "share_pct": 8.7,
+      "present_in": "1/1",
+      "figures": 0,
+      "citations": 6
+    },
+    "method": {
+      "share_pct": 18.2,
+      "present_in": "1/1",
+      "figures": 0,
+      "citations": 1
+    },
+    "experiments": {
+      "share_pct": 24.8,
+      "present_in": "1/1",
+      "figures": 1,
+      "citations": 0
+    },
+    "conclusion": {
+      "share_pct": 9.7,
+      "present_in": "1/1",
+      "figures": 0,
+      "citations": 0
+    }
+  }
+}

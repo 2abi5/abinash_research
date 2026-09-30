@@ -1,0 +1,25 @@
+{
+  "paper": "Sparse Expert Routing",
+  "venue": "neurips",
+  "date": "2026-09-30",
+  "gates": {
+    "G-CITE":      {"status": "fail", "note": "3 of 61 refs unresolved: zhang2024, patel2023, oss2025"},
+    "G-CLAIM":     {"status": "pass", "note": ""},
+    "G-VENUE":     {"status": "pass", "note": "9pp, checklist present, anonymity clean"},
+    "G-ETHICS":    {"status": "n/a",  "note": "no human subjects"},
+    "G-INTEGRITY": {"status": "pass", "note": ""},
+    "G-TOKEN":     {"status": "fail", "note": "[TBD] at sections/04-experiments.tex:112"}
+  },
+  "dimensions": {
+    "contribution":              {"score": 8, "evidence": "C1-C2 in LEDGER; gate mechanism is non-obvious", "fix": ""},
+    "claim_evidence":            {"score": 9, "evidence": "all 4 ledger claims mapped to Tab.2/Tab.4/Thm.1", "fix": ""},
+    "methodological_soundness":  {"score": 9, "evidence": "assumptions A1-A2 in §3.1; protocol in §4.1", "fix": ""},
+    "experimental_completeness": {"score": 5, "evidence": "single seed on 0.4pt ADE20K margin (Tab.2)", "fix": "run 3 seeds on ADE20K"},
+    "related_work":              {"score": 7, "evidence": "3 mechanism groupings §2; Liu25 discussed", "fix": "sharpen distinction sentence"},
+    "writing_clarity":           {"score": 8, "evidence": "prose_metrics: all PASS; reverse-outlined", "fix": ""},
+    "figures_tables":            {"score": 6, "evidence": "teaser+architecture present; no analysis figure", "fix": "plot routing entropy per layer"},
+    "citation_integrity":        {"score": 4, "evidence": "out/citations.md: 3 UNVERIFIED", "fix": "supply PDFs or remove"},
+    "reproducibility":           {"score": 8, "evidence": "configs+seeds committed; reproduce_table2.sh runs", "fix": ""},
+    "venue_compliance":          {"score": 9, "evidence": "venue_check.py neurips: no FAIL, re-verified 2026-09-30", "fix": ""}
+  }
+}

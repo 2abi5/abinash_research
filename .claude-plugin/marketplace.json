@@ -1,0 +1,17 @@
+{
+  "name": "abinash-research",
+  "owner": {
+    "name": "Abinash Panta"
+  },
+  "metadata": {
+    "description": "Professional research-paper production skills for Claude Code.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "abinash-research",
+      "source": "./",
+      "description": "Senior-researcher paper production suite: architecture, literature review, drafting, figures, citation verification, prose quality, venue compliance, adversarial review, readiness scoring."
+    }
+  ]
+}

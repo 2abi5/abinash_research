@@ -1,0 +1,83 @@
+{
+  "paper": "<short name>",
+  "venue": "neurips",
+  "date": "2026-09-30",
+  "gates": {
+    "G-CITE": {
+      "status": "not_run",
+      "note": ""
+    },
+    "G-CLAIM": {
+      "status": "not_run",
+      "note": ""
+    },
+    "G-VENUE": {
+      "status": "not_run",
+      "note": ""
+    },
+    "G-ETHICS": {
+      "status": "not_run",
+      "note": ""
+    },
+    "G-INTEGRITY": {
+      "status": "not_run",
+      "note": ""
+    },
+    "G-TOKEN": {
+      "status": "not_run",
+      "note": ""
+    }
+  },
+  "dimensions": {
+    "contribution": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "claim_evidence": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "methodological_soundness": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "experimental_completeness": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "related_work": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "writing_clarity": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "figures_tables": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "citation_integrity": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "reproducibility": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    },
+    "venue_compliance": {
+      "score": null,
+      "evidence": "",
+      "fix": ""
+    }
+  }
+}

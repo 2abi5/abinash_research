@@ -1,0 +1,26 @@
+\documentclass{article}
+\begin{document}
+See Figure~\ref{fig:missing} and Table~\ref{tab:main}.
+\begin{figure}[t]
+  \caption{A caption above the graphic, which is wrong for a figure.}
+  \label{fig:teaser}
+  \includegraphics{teaser.pdf}
+\end{figure}
+\begin{table}[t]
+  \begin{tabular}{|l|c|c|}
+    \hline
+    Method & Acc & FLOPs \\
+    \hline\hline
+    Ours & 85.1 & 4.0 \\
+    \hline
+  \end{tabular}
+  \caption{Table caption below the tabular, also wrong.}
+  \label{tab:main}
+\end{table}
+\begin{figure}[t]
+  \includegraphics{x.pdf}
+  \label{fig:nocap}
+\end{figure}
+The the results are good \cite{kim24}. TODO: add ablation.
+\label{tab:main}
+\end{document}

@@ -1,0 +1,7 @@
+seed: 0
+lr: 0.001
+batch_size: 256
+epochs: 300
+optimizer: AdamW
+weight_decay: 0.05
+lambda_entropy: 0.01
