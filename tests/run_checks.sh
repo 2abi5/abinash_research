@@ -48,6 +48,20 @@ echo "== scaffold round-trip =="
 T=$(mktemp -d)
 expect_findings "new_paper scaffold"         0 python3 $S/new_paper.py --title "Test Paper" --venue neurips --out "$T/paper"
 expect_findings "scaffold lint (its [TBD])"  1 python3 $S/latex_lint.py "$T/paper/main.tex" --venue neurips
+
+# The generated Makefile must point at the real scripts directory, whichever way the
+# skill was installed (global, plugin, or cloned into the project). A hardcoded
+# repo-relative path silently breaks `make check` for every global install.
+MK_S=$(grep -m1 '^S ' "$T/paper/Makefile" | sed 's/.*?= *//')
+case "$MK_S" in
+  /*) RESOLVED="$MK_S" ;;
+   *) RESOLVED="$T/paper/$MK_S" ;;
+esac
+if [ -f "$RESOLVED/verify_citations.py" ]; then
+  printf "  ok       %-34s (S=%s)\n" "scaffold Makefile script path" "${MK_S%%/skills*}..."; pass=$((pass+1))
+else
+  printf "  REGRESS  %-34s (S=%s does not resolve)\n" "scaffold Makefile script path" "$MK_S"; fail=$((fail+1))
+fi
 rm -rf "$T"
 
 echo

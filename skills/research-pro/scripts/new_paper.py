@@ -212,8 +212,21 @@ Status: supported · needs-evidence · unsupported
           f"Snapshot date: {reg.get('verified_on','unknown')}. "
           f"These go stale every cycle.\n", args.force)
 
-    S = "../skills/research-pro/scripts"
+    # Point the Makefile at wherever THIS script actually lives, so `make check`
+    # works whether the skill was installed globally (~/.claude/skills/), as a
+    # plugin, or cloned into the project. Prefer a relative path when the scripts
+    # sit near the paper (keeps a committed Makefile portable for co-authors);
+    # fall back to absolute when they are somewhere else entirely.
+    scripts_dir = os.path.dirname(os.path.abspath(__file__))
+    rel = os.path.relpath(scripts_dir, os.path.abspath(out))
+    # One ".." means the scripts are a near neighbour of the paper (cloned into the
+    # project) -- keep it relative so a committed Makefile still works for a
+    # co-author who clones elsewhere. Anything deeper is a different tree
+    # (a global or plugin install), where only an absolute path is stable.
+    S = rel if rel.count("..") <= 1 else scripts_dir
     write(os.path.join(out, "Makefile"), f"""# {args.title}
+# S is this machine's path to the research-pro scripts. Override per machine with
+#   make check S=/your/path/to/skills/research-pro/scripts
 S      ?= {S}
 VENUE  ?= {args.venue or 'neurips'}
 MAIN   ?= main

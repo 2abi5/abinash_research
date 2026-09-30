@@ -50,8 +50,15 @@ cp -r abinash_research/skills/*   ~/.claude/skills/
 cp -r abinash_research/commands/* ~/.claude/commands/
 ```
 
-**Without installing** — clone it and say *"use the research-pro skill in
-./abinash_research"*.
+**Without installing** — clone it anywhere and say *"use the research-pro skill in
+./abinash_research"*. Works, but the skills will not auto-trigger on their own:
+Claude Code only discovers skills under `.claude/skills/`, `~/.claude/skills/`, or an
+installed plugin.
+
+Whichever route you pick, `new_paper.py` writes the correct script path into the
+generated `Makefile` — relative when the skill is cloned into the project (so a
+committed Makefile still works for co-authors), absolute for a global or plugin
+install. Override per machine with `make check S=/path/to/scripts`.
 
 Requirements: Python 3.9+, stdlib only. `latexmk` for building, `pdfinfo` and
 `pdftotext` (poppler-utils) for PDF checks — all optional; every script degrades and
