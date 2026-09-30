@@ -1,0 +1,17 @@
+\documentclass{article}
+\begin{document}
+\section{Introduction}
+Image classifiers are deployed on devices that cannot afford their inference cost.
+A 7B vision transformer needs 4.1 GFLOPs per image; an edge accelerator budget is
+closer to 1. Existing sparsification closes part of that gap by pruning weights
+before inference, which assumes weight magnitude predicts importance --- an
+assumption that fails once the discriminative signal is input-dependent.
+
+We route instead of prune. A single gate scores the whole expert bank from pooled
+sequence context, then dispatches to the top two experts. Because the gate sees the
+full sequence before committing, it can send rare inputs to specialists that
+per-layer routing must choose blind. On ImageNet this holds top-1 accuracy at four
+times fewer inference FLOPs (Table~\ref{tab:main}), and replacing the learned gate
+with random routing costs 3.1 points while matching parameter count recovers only
+0.4 (Table~\ref{tab:abl}) --- the gain is the routing, not the capacity.
+\end{document}

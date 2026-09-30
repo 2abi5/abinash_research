@@ -19,6 +19,7 @@ import datetime as _dt
 import json
 import os
 import sys
+from typing import NoReturn
 
 import _textlib as T
 
@@ -53,16 +54,36 @@ BANDS = [(90, "SUBMIT", "Nothing blocking. Remaining items are polish."),
 EMPHASIS_BOOST = 1.5      # emphasised dimensions get 1.5x their default weight
 
 
+def _die(msg: str) -> "NoReturn":
+    """Usage error: stderr plus exit 2, matching the other scripts here."""
+    print(msg, file=sys.stderr)
+    raise SystemExit(2)
+
+
 def load_card(path: str) -> dict:
-    with open(path, encoding="utf-8") as fh:
-        text = fh.read()
+    try:
+        with open(path, encoding="utf-8") as fh:
+            text = fh.read()
+    except OSError as exc:
+        _die(f"error: cannot read scorecard {path}: {exc}\n"
+             f"  create one with: score_readiness.py --template --venue <slug>")
     if path.endswith((".yaml", ".yml")):
         try:
             import yaml
         except ImportError:
-            raise SystemExit("error: YAML scorecard needs PyYAML; use JSON instead")
-        return yaml.safe_load(text)
-    return json.loads(text)
+            _die("error: YAML scorecard needs PyYAML; use JSON instead")
+        try:
+            card = yaml.safe_load(text)
+        except Exception as exc:
+            _die(f"error: {path} is not valid YAML: {exc}")
+    else:
+        try:
+            card = json.loads(text)
+        except json.JSONDecodeError as exc:
+            _die(f"error: {path} is not valid JSON: {exc}")
+    if not isinstance(card, dict):
+        _die(f"error: {path} must contain an object, got {type(card).__name__}")
+    return card
 
 
 def weights_for(reg: dict, venue: str | None) -> dict[str, float]:
@@ -116,7 +137,7 @@ def main(argv=None) -> int:
     W = weights_for(reg, venue)
 
     dims = card.get("dimensions", {})
-    rows, refused, missing = [], [], []
+    rows, refused, missing, malformed = [], [], [], []
     for key, label in DIMENSIONS:
         d = dims.get(key) or {}
         score, evid = d.get("score"), (d.get("evidence") or "").strip()
@@ -126,12 +147,22 @@ def main(argv=None) -> int:
         if args.strict and not evid:
             refused.append(key)
             continue
-        score = max(0.0, min(10.0, float(score)))
+        try:
+            score = max(0.0, min(10.0, float(score)))
+        except (TypeError, ValueError):
+            malformed.append((key, score))
+            continue
         w = W[key]
         rows.append({"key": key, "label": label, "score": score, "weight": w,
                      "earned": score / 10.0 * w, "lost": (10.0 - score) / 10.0 * w,
                      "evidence": evid, "fix": (d.get("fix") or "").strip()})
 
+    if malformed:
+        print("MALFORMED SCORES — these are not numbers:\n")
+        for k, v in malformed:
+            print(f"  - {k}: {v!r}")
+        print("\nScores are 0-10. Anchors are in references/15-readiness-score.md.")
+        return 2
     if refused:
         print("REFUSED TO SCORE — these dimensions have a score but no `evidence`:\n")
         for k in refused:

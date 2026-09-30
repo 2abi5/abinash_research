@@ -102,6 +102,9 @@ def audit(path: str, target_pt: float) -> dict:
     if ext in RASTER:
         r["kind"] = "raster"
         dim = png_size(path) if ext == ".png" else jpeg_size(path)
+        if dim is None:
+            r["issues"].append(("FAIL", f"cannot parse this as {ext[1:].upper()} — "
+                                        f"corrupt, or the extension is wrong"))
         if dim:
             w, h = dim
             r["px"] = f"{w}x{h}"
@@ -122,6 +125,15 @@ def audit(path: str, target_pt: float) -> dict:
         r["kind"] = "vector"
         if ext != ".pdf":
             r["notes"].append("EPS/PS works with latex+dvips, not pdflatex — prefer PDF")
+            return r
+        try:
+            with open(path, "rb") as fh:
+                magic = fh.read(5)
+        except OSError:
+            magic = b""
+        if magic != b"%PDF-":
+            r["issues"].append(("FAIL", "not a valid PDF (missing the %PDF- header) — "
+                                        "the file is corrupt or misnamed"))
             return r
         f = pdf_facts(path)
         if "width_pt" in f:

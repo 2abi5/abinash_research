@@ -214,11 +214,24 @@ your own from `venues/_template.md`.
 ## Layout
 
 ```
-skills/research-pro/         orchestrator: 23 references, 9 scripts, 9 venue profiles, templates
+skills/research-pro/         orchestrator: 23 references, 9 scripts, 9 venue profiles, 4 worked examples, templates
 skills/paper-reviewer/       five-seat adversarial review panel
 commands/                    twelve /rp-* slash commands
 tests/                       deliberately broken fixtures + `run_checks.sh`, which every checker must still catch
 ```
+
+## Worked examples
+
+`skills/research-pro/examples/` shows the moves, not just the rules:
+
+- **The humanizer in three measured stages** — slop → rewrite → fix, with the real
+  `prose_metrics.py` output at each step, *including a stage that still fails*.
+  Reproducible from the fixtures.
+- **The gap paragraph** — patch framing vs limitation-without-a-reason vs challenge
+  framing, analysed clause by clause. This is the paragraph papers are won on.
+- **Limitations** — ritual → specific, and the line you must not cross.
+- **Gate 1 catching an unsupported abstract claim** — the extraction, the two honest
+  ways to close it, and why hedging is worse than either.
 
 ## Credits
 

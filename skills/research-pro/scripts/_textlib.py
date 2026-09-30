@@ -229,3 +229,66 @@ def find_gap_tokens(text: str) -> list[tuple[int, str, str]]:
             if tok in line:
                 out.append((i, tok, line.strip()[:110]))
     return out
+
+
+PDF_MAGIC = b"%PDF-"
+
+
+def sniff_binary(path: str) -> str | None:
+    """Return a human explanation if `path` is not the plain text it should be.
+
+    Guards every text-consuming script: a .tex or .bib argument that is really a
+    PDF produces confident nonsense otherwise (random bytes measure as 'prose').
+    """
+    try:
+        with open(path, "rb") as fh:
+            head = fh.read(4096)
+    except OSError as exc:
+        return f"cannot read {path}: {exc}"
+    if not head:
+        return f"{path} is empty"
+    if head.startswith(PDF_MAGIC):
+        return (f"{path} is a PDF, not text. Extract it first:\n"
+                f"    pdftotext -layout {path} {os.path.splitext(path)[0]}.txt\n"
+                f"  then pass the .txt file.")
+    for magic, kind in ((b"PK\x03\x04", "a zip/docx/xlsx archive"),
+                        (b"\x89PNG", "a PNG image"), (b"\xff\xd8\xff", "a JPEG image"),
+                        (b"\x1f\x8b", "a gzip archive"), (b"%!PS", "a PostScript file"),
+                        (b"{\\rtf", "an RTF document")):
+        if head.startswith(magic):
+            return f"{path} is {kind}, not text."
+    if b"\x00" in head:
+        return f"{path} looks like binary data (contains NUL bytes), not text."
+    nonprint = sum(1 for b in head if b < 9 or (13 < b < 32))
+    if nonprint > len(head) * 0.05:
+        return f"{path} looks like binary data ({nonprint} control bytes in the first 4 KB)."
+    return None
+
+
+def brace_balance(text: str) -> int:
+    """Net unescaped-brace depth, skipping verbatim-ish environments and \\{ \\}."""
+    t = strip_comments(text)
+    for env in ("verbatim", "lstlisting", "minted", "Verbatim"):
+        t = re.sub(rf"\\begin\{{{env}\*?\}}.*?\\end\{{{env}\*?\}}", " ", t, flags=re.S)
+    depth = 0
+    i = 0
+    while i < len(t):
+        c = t[i]
+        if c == "\\":
+            i += 2          # skip the escaped character, \{ and \} included
+            continue
+        if c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+        i += 1
+    return depth
+
+
+def env_balance(text: str) -> list[tuple[str, int]]:
+    """Unclosed or over-closed environments as [(name, net_count)]."""
+    t = strip_comments(text)
+    counts: dict[str, int] = {}
+    for m in re.finditer(r"\\(begin|end)\s*\{([^}]*)\}", t):
+        counts[m.group(2)] = counts.get(m.group(2), 0) + (1 if m.group(1) == "begin" else -1)
+    return [(k, v) for k, v in sorted(counts.items()) if v != 0]

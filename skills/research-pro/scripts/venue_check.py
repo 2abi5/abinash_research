@@ -79,6 +79,10 @@ def main(argv=None) -> int:
         return 0
 
     reg, V = load_venue(args.venue, args.registry)
+    why = T.sniff_binary(args.paper)
+    if why:
+        print(f"error: {why}", file=sys.stderr)
+        return 2
     raw = T.read_with_inputs(args.paper)
     if not raw:
         print(f"error: cannot read {args.paper}", file=sys.stderr)

@@ -222,6 +222,11 @@ def main(argv=None) -> int:
     ap.add_argument("--no-strict", dest="strict", action="store_false")
     args = ap.parse_args(argv)
 
+    why = T.sniff_binary(args.tex)
+    if why:
+        print(f"error: {why}", file=sys.stderr)
+        return 2
+
     m = analyse(args.tex)
     if m["words"] == 0:
         print(f"error: no prose found in {args.tex}", file=sys.stderr)

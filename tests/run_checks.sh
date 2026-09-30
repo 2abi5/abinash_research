@@ -32,6 +32,18 @@ expect_findings "repo_scan"                  0 python3 $S/repo_scan.py $F/repo
 expect_findings "score_readiness --template" 0 python3 $S/score_readiness.py --template --venue neurips
 expect_findings "venue_check --list"         0 python3 $S/venue_check.py --list --venue neurips --paper $F/bad_paper.tex
 
+echo "== clean prose must pass, and the rewrite stages must behave =="
+expect_findings "prose_metrics (clean2, all pass)" 0 python3 $S/prose_metrics.py $F/clean2.tex
+expect_findings "prose_metrics (clean, 1 FAIL)"    1 python3 $S/prose_metrics.py $F/clean.tex
+
+echo "== hostile inputs: clean errors, never a traceback =="
+expect_findings "prose_metrics on a PDF"           2 python3 $S/prose_metrics.py $F/figs/teaser_good.pdf
+expect_findings "verify_citations on a PDF"        2 python3 $S/verify_citations.py $F/figs/teaser_good.pdf --offline
+expect_findings "score_readiness malformed json"   2 python3 $S/score_readiness.py $F/notjson.json
+expect_findings "score_readiness missing file"     2 python3 $S/score_readiness.py $F/nope.json
+expect_findings "latex_lint unbalanced brace"      1 python3 $S/latex_lint.py $F/unbalanced.tex
+expect_findings "figure_audit corrupt pdf"         1 python3 $S/figure_audit.py $F/corrupt.pdf
+
 echo "== scaffold round-trip =="
 T=$(mktemp -d)
 expect_findings "new_paper scaffold"         0 python3 $S/new_paper.py --title "Test Paper" --venue neurips --out "$T/paper"

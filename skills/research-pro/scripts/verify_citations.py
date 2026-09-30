@@ -25,6 +25,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+import _textlib
+
 UA = "research-pro-citation-verifier/1.0 (academic reference checking)"
 TIMEOUT = 20
 
@@ -419,6 +421,10 @@ def main(argv=None) -> int:
                     help="tex files, to find uncited entries and unresolved keys")
     args = ap.parse_args(argv)
 
+    why = _textlib.sniff_binary(args.bib)
+    if why:
+        print(f"error: {why}", file=sys.stderr)
+        return 2
     try:
         with open(args.bib, encoding="utf-8", errors="replace") as fh:
             entries = parse_bibtex(fh.read())

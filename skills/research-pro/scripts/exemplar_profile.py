@@ -242,6 +242,10 @@ def main(argv=None) -> int:
         if not os.path.isfile(p):
             print(f"warning: skipping missing {p}", file=sys.stderr)
             continue
+        why = T.sniff_binary(p)
+        if why:
+            print(f"error: {why}", file=sys.stderr)
+            return 2
         pr = profile(p)
         if pr["total_words"] < 50:
             print(f"warning: {p} has almost no prose; skipping", file=sys.stderr)

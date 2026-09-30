@@ -51,6 +51,10 @@ def main(argv=None) -> int:
     ap.add_argument("--no-strict", dest="strict", action="store_false")
     args = ap.parse_args(argv)
 
+    why = T.sniff_binary(args.tex)
+    if why:
+        print(f"error: {why}", file=sys.stderr)
+        return 2
     raw = T.read_with_inputs(args.tex)
     if not raw:
         print(f"error: cannot read {args.tex}", file=sys.stderr)
@@ -61,6 +65,16 @@ def main(argv=None) -> int:
     def fail(msg): findings.append(("FAIL", msg))
     def warn(msg): findings.append(("WARN", msg))
     def info(msg): findings.append(("INFO", msg))
+
+    # ---- structural balance: an unbalanced brace breaks the build entirely
+    depth = T.brace_balance(raw)
+    if depth != 0:
+        fail(f"unbalanced braces: net {depth:+d} — "
+             + ("an unclosed `{` will break the build or swallow the rest of the document"
+                if depth > 0 else "an extra `}` will break the build"))
+    for env, net in T.env_balance(raw):
+        fail(f"environment `{env}` is {'not closed' if net > 0 else 'closed too often'} "
+             f"(net {net:+d} \\begin vs \\end)")
 
     # ---- labels and refs
     labels = re.findall(r"\\label\s*\{([^}]*)\}", text)

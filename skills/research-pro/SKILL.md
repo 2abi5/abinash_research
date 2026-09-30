@@ -90,6 +90,9 @@ Experiments `references/06-experiments.md` · Results/statistics
 `references/07-results-and-stats.md` · Discussion/Limitations
 `references/08-discussion.md` · Conclusion `references/10-conclusion.md`.
 
+Worked before/after examples live in `examples/` — load `examples/index.md` and
+then the one example that matches the problem, never all of them.
+
 Always read `references/00-operating-rules.md` before your first substantive
 edit in a session — it holds the claim/evidence ledger format that every later
 stage reads and writes.
