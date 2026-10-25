@@ -64,9 +64,11 @@ export async function verifySessionToken(token: string | undefined): Promise<str
 export async function checkCredentials(username: string, password: string): Promise<boolean> {
   const envUser = process.env.AUTH_USERNAME;
   const envPass = process.env.AUTH_PASSWORD;
-  if (!envUser || !envPass) return false; // refuse logins when not configured
-  const a = await hmacHex(`cred|${username}|${password}`);
-  const b = await hmacHex(`cred|${envUser}|${envPass}`);
+  if (!envUser?.trim() || !envPass?.trim()) return false; // refuse logins when not configured
+  // Trim stray whitespace (paste/keyboard artifacts) and compare usernames
+  // case-insensitively; passwords stay case-sensitive.
+  const a = await hmacHex(`cred|${username.trim().toLowerCase()}|${password.trim()}`);
+  const b = await hmacHex(`cred|${envUser.trim().toLowerCase()}|${envPass.trim()}`);
   let diff = 0;
   for (let i = 0; i < b.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return a.length === b.length && diff === 0;
