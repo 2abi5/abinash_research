@@ -201,6 +201,11 @@ export function deepLinks(query: string, location?: string): DeepLink[] {
     { board: "Glassdoor", url: `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${q}` },
     { board: "Google Jobs", url: `https://www.google.com/search?q=${q}+jobs${loc ? `+in+${loc}` : ""}&ibp=htl;jobs` },
     { board: "Wellfound (startups)", url: `https://wellfound.com/jobs?keywords=${q}` },
-    { board: "RemoteOK", url: `https://remoteok.com/remote-${query.trim().toLowerCase().replace(/\s+/g, "-")}-jobs` },
+    {
+      board: "RemoteOK",
+      url: `https://remoteok.com/remote-${
+        query.trim().toLowerCase().replace(/[^a-z0-9\s-]/g, "").trim().replace(/[\s-]+/g, "-") || "dev"
+      }-jobs`,
+    },
   ];
 }

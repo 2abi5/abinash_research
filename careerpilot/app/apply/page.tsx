@@ -75,11 +75,20 @@ export default function ApplyPage() {
 
   function addManual() {
     if (!jobTitle.trim()) return setError("Enter a job title to track.");
+    const t = jobTitle.trim();
+    const c = company.trim() || "—";
+    if (
+      tracker.some(
+        (x) => x.title.toLowerCase() === t.toLowerCase() && x.company.toLowerCase() === c.toLowerCase(),
+      )
+    )
+      return setError("You're already tracking that application.");
+    setError("");
     const next: TrackedApp[] = [
       {
         id: `manual-${Date.now()}`,
-        title: jobTitle.trim(),
-        company: company.trim() || "—",
+        title: t,
+        company: c,
         url: "",
         status: "Applied" as const,
         notes: "",

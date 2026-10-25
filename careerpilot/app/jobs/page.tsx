@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Nav from "@/components/Nav";
 import Icon from "@/components/Icon";
@@ -21,12 +21,19 @@ function JobFinder() {
   const [busy, setBusy] = useState<"" | "search" | "scout">("");
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
+  const autoRan = useRef(false);
   const [tracked, setTracked] = useState<Set<string>>(new Set());
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
   useEffect(() => {
-    const q = params.get("q") || loadLS(KEYS.targetRole, "");
+    const qp = params.get("q");
+    const q = qp || loadLS(KEYS.targetRole, "");
     if (q) setQuery(q);
+    // A chip from CV Studio should search immediately, not just prefill.
+    if (qp && !autoRan.current) {
+      autoRan.current = true;
+      search(qp);
+    }
     const analysis = loadLS<CvAnalysis | null>(KEYS.analysis, null);
     if (analysis?.searchQueries) setSuggestions(analysis.searchQueries.slice(0, 6));
     setTracked(new Set(loadLS<TrackedApp[]>(KEYS.tracker, []).map((t) => t.id)));
@@ -34,6 +41,7 @@ function JobFinder() {
   }, []);
 
   async function search(q?: string) {
+    if (busy) return;
     const term = (q ?? query).trim();
     if (!term) return setError("Enter keywords to search.");
     if (q) setQuery(q);
@@ -60,6 +68,7 @@ function JobFinder() {
   }
 
   async function runScout() {
+    if (busy) return;
     const term = query.trim();
     if (!term) return setError("Enter a role for the scout.");
     setBusy("scout");

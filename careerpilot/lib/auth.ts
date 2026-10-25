@@ -6,7 +6,11 @@ const encoder = new TextEncoder();
 function getSecret(): string {
   // AUTH_SECRET is required: deriving a fallback from the credentials would let
   // a leaked session token be cracked offline. Login fails closed without it.
-  return process.env.AUTH_SECRET?.trim() || "";
+  const secret = process.env.AUTH_SECRET?.trim();
+  if (!secret) return "";
+  // Bind the signing key to the current credentials so rotating the username,
+  // password or secret immediately revokes every outstanding session.
+  return `${secret}::${process.env.AUTH_USERNAME?.trim() || ""}::${process.env.AUTH_PASSWORD?.trim() || ""}`;
 }
 
 export function authConfigured(): boolean {
@@ -62,6 +66,8 @@ export async function verifySessionToken(token: string | undefined): Promise<str
   if (diff !== 0) return null;
   const [username, expStr] = payload.split("|");
   if (!username || !expStr || Date.now() > Number(expStr)) return null;
+  const envUser = process.env.AUTH_USERNAME?.trim().toLowerCase();
+  if (!envUser || username.trim().toLowerCase() !== envUser) return null;
   return username;
 }
 

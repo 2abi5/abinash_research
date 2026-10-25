@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MODEL, anthropic, apiErrorMessage, extractJson, responseText } from "@/lib/anthropic";
+import { MODEL, anthropic, apiErrorMessage, extractJson, responseText, stopReasonError } from "@/lib/anthropic";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -59,6 +59,8 @@ ${cvText.slice(0, 24000)}
       system: SYSTEM,
       messages: [{ role: "user", content: prompt }],
     });
+    const stopErr = stopReasonError(msg);
+    if (stopErr) return NextResponse.json({ error: stopErr }, { status: 502 });
     const parsed = extractJson<{ markdown: string; changeNotes: string[] }>(responseText(msg));
     if (!parsed?.markdown)
       return NextResponse.json({ error: "Could not parse generated CV — try again." }, { status: 502 });

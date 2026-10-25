@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type Anthropic from "@anthropic-ai/sdk";
-import { MODEL, anthropic, apiErrorMessage, extractJson, responseText } from "@/lib/anthropic";
+import { MODEL, anthropic, apiErrorMessage, extractJson, responseText, stopReasonError } from "@/lib/anthropic";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
   if (!targetRole) return NextResponse.json({ error: "Target role is required." }, { status: 400 });
   if (!cvText && !pdf)
     return NextResponse.json({ error: "Provide CV text or upload a PDF." }, { status: 400 });
-  if (pdf.length > 6_000_000)
-    return NextResponse.json({ error: "PDF too large — keep it under 4 MB." }, { status: 400 });
+  if (pdf.length > 4_300_000)
+    return NextResponse.json({ error: "PDF too large — keep it under 3 MB." }, { status: 400 });
 
   const instruction = `Analyze the CV ${pdf ? "in the attached PDF" : "below"} for the target role: "${targetRole}".
 ${body.jobDescription ? `Specific job description to match against:\n"""\n${body.jobDescription.slice(0, 8000)}\n"""` : "No specific job description — evaluate against typical postings for that role."}
@@ -80,6 +80,8 @@ Return JSON with EXACTLY these keys:
       system: SYSTEM,
       messages: [{ role: "user", content }],
     });
+    const stopErr = stopReasonError(msg);
+    if (stopErr) return NextResponse.json({ error: stopErr }, { status: 502 });
     const parsed = extractJson<CvAnalysis>(responseText(msg));
     if (!parsed) return NextResponse.json({ error: "Could not parse analysis — try again." }, { status: 502 });
     return NextResponse.json(parsed);

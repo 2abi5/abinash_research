@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MODEL, anthropic, apiErrorMessage, extractJson, responseText } from "@/lib/anthropic";
+import { MODEL, anthropic, apiErrorMessage, extractJson, responseText, stopReasonError } from "@/lib/anthropic";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -75,6 +75,8 @@ Return JSON with EXACTLY these keys:
       system: SYSTEM,
       messages: [{ role: "user", content: prompt }],
     });
+    const stopErr = stopReasonError(msg);
+    if (stopErr) return NextResponse.json({ error: stopErr }, { status: 502 });
     const parsed = extractJson<{ markdown: string; tips: string[] }>(responseText(msg));
     if (!parsed?.markdown)
       return NextResponse.json({ error: "Could not build the CV — try again." }, { status: 502 });

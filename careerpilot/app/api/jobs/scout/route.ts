@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import type Anthropic from "@anthropic-ai/sdk";
-import { MODEL, anthropic, apiErrorMessage, extractJson, responseText } from "@/lib/anthropic";
+import { MODEL, anthropic, apiErrorMessage, extractJson, responseText, stopReasonError } from "@/lib/anthropic";
 
 export const runtime = "nodejs";
 export const maxDuration = 300;
@@ -59,6 +59,8 @@ Then output JSON with EXACTLY these keys:
       messages.push({ role: "assistant", content: msg.content });
       msg = await client.messages.create({ ...params, messages });
     }
+    const stopErr = stopReasonError(msg);
+    if (stopErr) return NextResponse.json({ error: stopErr }, { status: 502 });
     const parsed = extractJson<ScoutResult>(responseText(msg));
     if (!parsed?.findings)
       return NextResponse.json({ error: "Scout came back empty — try a broader role." }, { status: 502 });

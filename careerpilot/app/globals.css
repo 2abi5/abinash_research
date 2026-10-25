@@ -139,8 +139,8 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
   box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 .grid { display: grid; gap: 18px; }
-.grid-2 { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
-.grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+.grid-2 { grid-template-columns: repeat(auto-fit, minmax(min(290px, 100%), 1fr)); }
+.grid-3 { grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); }
 
 .page-title { font-size: 30px; font-weight: 800; letter-spacing: -0.025em; margin: 34px 0 6px; }
 .page-sub { color: var(--muted); margin: 0 0 24px; max-width: 640px; }

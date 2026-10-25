@@ -39,20 +39,35 @@ export function extractJson<T>(text: string): T | null {
   const candidates = [fenced?.[1], text];
   for (const c of candidates) {
     if (!c) continue;
-    const start = c.search(/[[{]/);
-    if (start === -1) continue;
-    const slice = c.slice(start);
-    // try progressively trimming trailing junk
-    for (let end = slice.length; end > 0; end--) {
-      const ch = slice[end - 1];
-      if (ch !== "}" && ch !== "]") continue;
-      try {
-        return JSON.parse(slice.slice(0, end)) as T;
-      } catch {
-        /* keep trimming */
+    // Prose before the JSON may contain stray brackets, so try several start
+    // positions, earliest first, trimming trailing junk at each.
+    const starts: number[] = [];
+    for (let i = 0; i < c.length && starts.length < 12; i++) {
+      if (c[i] === "{" || c[i] === "[") starts.push(i);
+    }
+    for (const start of starts) {
+      const slice = c.slice(start);
+      for (let end = slice.length; end > 0; end--) {
+        const ch = slice[end - 1];
+        if (ch !== "}" && ch !== "]") continue;
+        try {
+          const v = JSON.parse(slice.slice(0, end));
+          if (v && typeof v === "object") return v as T;
+        } catch {
+          /* keep trimming */
+        }
       }
     }
   }
+  return null;
+}
+
+/** Specific message when the model stopped abnormally, else null. */
+export function stopReasonError(msg: Anthropic.Message): string | null {
+  if (msg.stop_reason === "max_tokens")
+    return "The AI response was cut off — the input is too long. Shorten the CV or job description and retry.";
+  if (msg.stop_reason === "refusal")
+    return "The AI declined this request — rephrase the input and try again.";
   return null;
 }
 

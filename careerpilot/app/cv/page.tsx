@@ -116,8 +116,8 @@ export default function CvStudio() {
       setError("Only PDF files are supported — or paste your CV as text.");
       return;
     }
-    if (file.size > 4 * 1024 * 1024) {
-      setError("PDF too large — keep it under 4 MB.");
+    if (file.size > 3 * 1024 * 1024) {
+      setError("PDF too large — keep it under 3 MB (export it compressed, or paste the text instead).");
       return;
     }
     const reader = new FileReader();
@@ -144,8 +144,14 @@ export default function CvStudio() {
           jobDescription: jobDescription.trim() || undefined,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) return setError(data.error || "Analysis failed.");
+      const data = await res.json().catch(() => null);
+      if (!res.ok)
+        return setError(
+          data?.error ||
+            (res.status === 413
+              ? "File too large — keep the PDF under 3 MB."
+              : `Request failed (${res.status}) — try again.`) || "Analysis failed.");
+      if (!data) return setError("Unexpected response — try again.");
       const a = data as CvAnalysis;
       setAnalysis(a);
       saveLS(KEYS.analysis, a);
@@ -179,8 +185,13 @@ export default function CvStudio() {
           keywordsMissing: analysis?.keywordsMissing,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) return setError(data.error || "Generation failed.");
+      const data = await res.json().catch(() => null);
+      if (!res.ok)
+        return setError(
+          data?.error ||
+            (res.status === 413
+              ? "File too large — keep the PDF under 3 MB."
+              : `Request failed (${res.status}) — try again.`) || "Generation failed.");
       setOptimized(data);
       saveLS(KEYS.optimized, data);
     } catch {
@@ -203,8 +214,13 @@ export default function CvStudio() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ ...b, targetRole: targetRole.trim() }),
       });
-      const data = await res.json();
-      if (!res.ok) return setError(data.error || "Build failed.");
+      const data = await res.json().catch(() => null);
+      if (!res.ok)
+        return setError(
+          data?.error ||
+            (res.status === 413
+              ? "File too large — keep the PDF under 3 MB."
+              : `Request failed (${res.status}) — try again.`) || "Build failed.");
       const built = { markdown: data.markdown as string, changeNotes: (data.tips as string[]) || [] };
       setOptimized(built);
       saveLS(KEYS.optimized, built);
@@ -252,7 +268,10 @@ export default function CvStudio() {
               type="text"
               placeholder="e.g. Research Scientist, Data Analyst, ML Engineer…"
               value={targetRole}
-              onChange={(e) => setTargetRole(e.target.value)}
+              onChange={(e) => {
+                setTargetRole(e.target.value);
+                saveLS(KEYS.targetRole, e.target.value);
+              }}
             />
             {mode === "have" && (<>
             <label className="field">CV text (paste) — or upload a PDF below</label>
