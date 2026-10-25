@@ -18,7 +18,8 @@ function JobFinder() {
   const [scout, setScout] = useState<ScoutResult | null>(null);
   const [boardErrors, setBoardErrors] = useState<string[]>([]);
   const [note, setNote] = useState("");
-  const [busy, setBusy] = useState<"" | "search" | "scout">("");
+  const [busySearch, setBusySearch] = useState(false);
+  const [busyScout, setBusyScout] = useState(false);
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
   // Which "keywords · location" each result card was produced for, so stale
@@ -45,17 +46,18 @@ function JobFinder() {
   }, []);
 
   async function search(q?: string) {
-    if (busy) return;
+    if (busySearch) return;
     const term = (q ?? query).trim();
     if (!term) return setError("Enter keywords to search.");
     if (q) setQuery(q);
-    setBusy("search");
+    setBusySearch(true);
     setError("");
     try {
       const res = await fetch("/api/jobs/search", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ query: term, location: location.trim() || undefined }),
+        signal: AbortSignal.timeout(30_000),
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || "Search failed.");
@@ -69,24 +71,29 @@ function JobFinder() {
         setScout(null);
         setScoutFor("");
       }
-    } catch {
-      setError("Network error — try again.");
+    } catch (e) {
+      setError(
+        e instanceof DOMException && (e.name === "TimeoutError" || e.name === "AbortError")
+          ? "The board search timed out — try again."
+          : "Network error — try again.",
+      );
     } finally {
-      setBusy("");
+      setBusySearch(false);
     }
   }
 
   async function runScout() {
-    if (busy) return;
+    if (busyScout) return;
     const term = query.trim();
     if (!term) return setError("Enter a role for the scout.");
-    setBusy("scout");
+    setBusyScout(true);
     setError("");
     try {
       const res = await fetch("/api/jobs/scout", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ role: term, location: location.trim() || undefined }),
+        signal: AbortSignal.timeout(290_000),
       });
       const data = await res.json();
       if (!res.ok) return setError(data.error || "Scout failed.");
@@ -100,10 +107,14 @@ function JobFinder() {
         setSearched(false);
         setListFor("");
       }
-    } catch {
-      setError("Network error — try again.");
+    } catch (e) {
+      setError(
+        e instanceof DOMException && (e.name === "TimeoutError" || e.name === "AbortError")
+          ? "The scout took too long and was stopped — try again or narrow the role."
+          : "Network error — try again.",
+      );
     } finally {
-      setBusy("");
+      setBusyScout(false);
     }
   }
 
@@ -165,13 +176,19 @@ function JobFinder() {
         )}
         {error && <div className="error">{error}</div>}
         <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
-          <button className="btn" onClick={() => search()} disabled={busy !== ""}>
-            {busy === "search" ? <span className="spinner" /> : <><Icon name="search" size={15} /> Search live boards</>}
+          <button className="btn" onClick={() => search()} disabled={busySearch}>
+            {busySearch ? <span className="spinner" /> : <><Icon name="search" size={15} /> Search live boards</>}
           </button>
-          <button className="btn ghost" onClick={runScout} disabled={busy !== ""}>
-            {busy === "scout" ? <span className="spinner" /> : <><Icon name="bot" size={15} /> AI web scout</>}
+          <button className="btn ghost" onClick={runScout} disabled={busyScout}>
+            {busyScout ? <span className="spinner" /> : <><Icon name="bot" size={15} /> AI web scout</>}
           </button>
         </div>
+        {busyScout && (
+          <div className="notice">
+            The scout is searching the live web — this usually takes a minute or two. You can keep
+            using “Search live boards” and the board links meanwhile.
+          </div>
+        )}
       </div>
 
       {query.trim().length > 1 && (

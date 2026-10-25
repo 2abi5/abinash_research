@@ -56,6 +56,7 @@ export default function ApplyPage() {
       const res = await fetch("/api/apply/kit", {
         method: "POST",
         headers: { "content-type": "application/json" },
+        signal: AbortSignal.timeout(290_000),
         body: JSON.stringify({
           cvText,
           jobTitle: jobTitle.trim(),

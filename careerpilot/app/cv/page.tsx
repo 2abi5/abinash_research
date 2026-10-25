@@ -137,6 +137,7 @@ export default function CvStudio() {
       const res = await fetch("/api/cv/analyze", {
         method: "POST",
         headers: { "content-type": "application/json" },
+        signal: AbortSignal.timeout(290_000),
         body: JSON.stringify({
           cvText: cvText.trim() || undefined,
           pdfBase64: pdf?.base64,
@@ -178,6 +179,7 @@ export default function CvStudio() {
       const res = await fetch("/api/cv/generate", {
         method: "POST",
         headers: { "content-type": "application/json" },
+        signal: AbortSignal.timeout(290_000),
         body: JSON.stringify({
           cvText: source,
           targetRole: targetRole.trim(),
@@ -212,6 +214,7 @@ export default function CvStudio() {
       const res = await fetch("/api/cv/build", {
         method: "POST",
         headers: { "content-type": "application/json" },
+        signal: AbortSignal.timeout(290_000),
         body: JSON.stringify({ ...b, targetRole: targetRole.trim() }),
       });
       const data = await res.json().catch(() => null);
