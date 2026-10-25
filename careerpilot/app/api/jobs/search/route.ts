@@ -14,10 +14,12 @@ export async function POST(req: NextRequest) {
   const query = (body.query || "").trim();
   if (!query) return NextResponse.json({ error: "Enter a search query." }, { status: 400 });
 
-  const { jobs, errors } = await searchJobs(query);
+  const location = body.location?.trim() || undefined;
+  const { jobs, errors, note } = await searchJobs(query, location);
   return NextResponse.json({
     jobs,
-    links: deepLinks(query, body.location?.trim() || undefined),
+    links: deepLinks(query, location),
     errors,
+    note,
   });
 }

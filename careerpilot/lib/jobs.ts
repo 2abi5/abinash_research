@@ -88,7 +88,9 @@ async function searchArbeitnow(query: string): Promise<Job[]> {
       const hay = `${j.title} ${j.company_name} ${(j.tags ?? []).join(" ")} ${stripHtml(
         j.description ?? "",
       ).slice(0, 400)}`.toLowerCase();
-      return terms.length === 0 || terms.some((t) => hay.includes(t));
+      const meaningful = terms.filter((t) => t.length > 2);
+      const need = meaningful.length ? meaningful : terms;
+      return need.length === 0 || need.every((t) => hay.includes(t));
     })
     .map((j) => ({
       id: `arbeitnow-${j.slug}`,
@@ -101,6 +103,46 @@ async function searchArbeitnow(query: string): Promise<Job[]> {
       publishedAt: j.created_at ? new Date(j.created_at * 1000).toISOString() : null,
       salary: null,
     }));
+}
+
+// ── Strict location filtering ────────────────────────────────────────────────
+// A job passes when its location names the requested place (with common country
+// aliases) or is explicitly open anywhere (worldwide/global). Everything else —
+// e.g. a France-only posting against a "USA" filter — is dropped.
+const ALIAS_GROUPS: string[][] = [
+  ["usa", "us", "u.s.", "u.s.a", "united states", "america", "north america", "states"],
+  ["uk", "united kingdom", "great britain", "britain", "england", "scotland", "wales"],
+  ["uae", "united arab emirates", "dubai", "abu dhabi"],
+  ["germany", "deutschland"],
+  ["netherlands", "holland"],
+  ["czechia", "czech republic"],
+  ["europe", "eu", "emea"],
+  ["apac", "asia", "asia-pacific"],
+];
+
+function expandAliases(token: string): string[] {
+  for (const group of ALIAS_GROUPS) if (group.includes(token)) return group;
+  return [token];
+}
+
+const OPEN_ANYWHERE = /(^|[^a-z])(worldwide|anywhere|global|international)([^a-z]|$)/;
+
+export function locationMatches(jobLocation: string, filter: string): boolean {
+  const jl = jobLocation.toLowerCase();
+  if (OPEN_ANYWHERE.test(jl)) return true;
+  const tokens = filter
+    .toLowerCase()
+    .split(/,|\/|;| and | or /)
+    .map((t) => t.trim())
+    .filter((t) => t.length > 1);
+  if (tokens.length === 0) return true;
+  for (const t of tokens) {
+    for (const needle of expandAliases(t)) {
+      const esc = needle.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      if (new RegExp(`(^|[^a-z])${esc}([^a-z]|$)`).test(jl)) return true;
+    }
+  }
+  return false;
 }
 
 /** Rank jobs by keyword overlap with the query, newest first as tiebreaker. */
@@ -124,7 +166,8 @@ function rank(jobs: Job[], query: string): Job[] {
 
 export async function searchJobs(
   query: string,
-): Promise<{ jobs: Job[]; errors: string[] }> {
+  location?: string,
+): Promise<{ jobs: Job[]; errors: string[]; note?: string }> {
   const results = await Promise.allSettled([searchRemotive(query), searchArbeitnow(query)]);
   const jobs: Job[] = [];
   const errors: string[] = [];
@@ -133,7 +176,16 @@ export async function searchJobs(
     if (r.status === "fulfilled") jobs.push(...r.value);
     else errors.push(`${names[i]} unavailable`);
   });
-  return { jobs: rank(jobs, query).slice(0, 50), errors };
+  const ranked = rank(jobs, query);
+  const loc = location?.trim();
+  if (!loc) return { jobs: ranked.slice(0, 50), errors };
+
+  const filtered = ranked.filter((j) => locationMatches(j.location, loc));
+  let note: string | undefined;
+  if (filtered.length === 0 && ranked.length > 0) {
+    note = `The open boards had ${ranked.length} “${query}” matches, but none located in “${loc}” (these boards skew remote/EU). For ${loc}, use the pre-filled LinkedIn/Indeed/Google links or the AI web scout.`;
+  }
+  return { jobs: filtered.slice(0, 50), errors, note };
 }
 
 /** Pre-filled search links for boards without a public API. */

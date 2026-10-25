@@ -3,7 +3,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { MODEL, anthropic, apiErrorMessage, extractJson, responseText } from "@/lib/anthropic";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export type ScoutResult = {
   findings: { title: string; company: string; location: string; url: string; note: string }[];
@@ -24,7 +24,12 @@ export async function POST(req: NextRequest) {
   const role = (body.role || "").trim();
   if (!role) return NextResponse.json({ error: "Role is required." }, { status: 400 });
 
-  const prompt = `Find current job openings for: "${role}"${body.location ? ` in or near "${body.location}" (remote also fine)` : " (any location, remote preferred)"}.
+  const locationRule = body.location
+    ? `STRICT location rule: report ONLY openings located in "${body.location}" or explicitly remote-open to candidates based there. Discard every posting in any other country or region, however good the match.`
+    : "Any location is fine; prefer remote-friendly roles.";
+
+  const prompt = `Find current job openings for: "${role}"${body.location ? ` in or near "${body.location}"` : ""}.
+${locationRule}
 ${body.extras ? `Candidate context to prioritize matches: ${body.extras.slice(0, 1500)}` : ""}
 
 Use web search (job boards, company career pages, "hiring" posts). Prefer postings from the last 30 days.
@@ -36,20 +41,24 @@ Then output JSON with EXACTLY these keys:
 }`;
 
   try {
-    const msg = await anthropic().messages.create({
+    const client = anthropic();
+    const tools = [
+      { type: "web_search_20260209", name: "web_search", max_uses: 4 } as Anthropic.ToolUnion,
+    ];
+    const messages: Anthropic.MessageParam[] = [{ role: "user", content: prompt }];
+    const params = {
       model: MODEL,
       max_tokens: 8000,
-      output_config: { effort: "low" },
+      output_config: { effort: "low" as const },
       system: SYSTEM,
-      tools: [
-        {
-          type: "web_search_20260209",
-          name: "web_search",
-          max_uses: 4,
-        } as Anthropic.ToolUnion,
-      ],
-      messages: [{ role: "user", content: prompt }],
-    });
+      tools,
+    };
+    let msg = await client.messages.create({ ...params, messages });
+    // A long web-search turn can pause; continue it (bounded) until it finishes.
+    for (let i = 0; i < 3 && msg.stop_reason === "pause_turn"; i++) {
+      messages.push({ role: "assistant", content: msg.content });
+      msg = await client.messages.create({ ...params, messages });
+    }
     const parsed = extractJson<ScoutResult>(responseText(msg));
     if (!parsed?.findings)
       return NextResponse.json({ error: "Scout came back empty — try a broader role." }, { status: 502 });

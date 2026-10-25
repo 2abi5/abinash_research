@@ -16,13 +16,15 @@ const handler = createMcpHandler((server) => {
       title: "Search job openings",
       description:
         "Search live job openings across open job boards (Remotive, Arbeitnow) by keyword. " +
-        "Returns title, company, location and application URL for each match.",
+        "Returns title, company, location and application URL for each match. " +
+        "Pass location to strictly filter to a country/region.",
       inputSchema: z.object({
         query: z.string().min(2).describe("Keywords, e.g. 'machine learning engineer'"),
+        location: z.string().optional().describe("Strict location filter, e.g. 'USA' or 'Germany'"),
       }),
     },
-    async ({ query }) => {
-      const { jobs, errors } = await searchJobs(query);
+    async ({ query, location }) => {
+      const { jobs, errors, note } = await searchJobs(query, location);
       const lines = jobs
         .slice(0, 15)
         .map(
@@ -31,6 +33,7 @@ const handler = createMcpHandler((server) => {
         );
       const text =
         (lines.length ? lines.join("\n") : "No matches on the open boards right now.") +
+        (note ? `\n\n${note}` : "") +
         (errors.length ? `\n\nNote: ${errors.join(", ")}.` : "");
       return { content: [{ type: "text", text }] };
     },

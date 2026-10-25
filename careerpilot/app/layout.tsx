@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "CareerPilot",
   description:
-    "AI job-search copilot: CV optimization, keyword analysis, live job search and application kits powered by Claude.",
+    "Your AI job-search copilot: CV optimization, keyword analysis, live job search and tailored application kits.",
   icons: { icon: "/icon.svg" },
 };
 

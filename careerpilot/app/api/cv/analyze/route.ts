@@ -3,7 +3,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { MODEL, anthropic, apiErrorMessage, extractJson, responseText } from "@/lib/anthropic";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 export type CvAnalysis = {
   atsScore: number;

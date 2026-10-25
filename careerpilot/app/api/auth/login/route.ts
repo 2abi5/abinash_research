@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   SESSION_COOKIE,
   SESSION_MAX_AGE,
+  authConfigured,
   checkCredentials,
   createSessionToken,
 } from "@/lib/auth";
@@ -29,12 +30,11 @@ export async function POST(req: NextRequest) {
   const ok = await checkCredentials(String(body.username ?? ""), String(body.password ?? ""));
   if (!ok) {
     attempts.set(ip, { n: (a && now - a.t < 60_000 ? a.n : 0) + 1, t: now });
-    const configured = Boolean(process.env.AUTH_USERNAME && process.env.AUTH_PASSWORD);
     return NextResponse.json(
       {
-        error: configured
+        error: authConfigured()
           ? "Wrong username or password."
-          : "Login is not configured — set AUTH_USERNAME and AUTH_PASSWORD env vars.",
+          : "Login is not configured — set the AUTH_USERNAME, AUTH_PASSWORD and AUTH_SECRET environment variables, then redeploy.",
       },
       { status: 401 },
     );

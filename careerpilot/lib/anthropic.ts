@@ -59,10 +59,10 @@ export function extractJson<T>(text: string): T | null {
 /** Friendly error message for API failures, without leaking internals. */
 export function apiErrorMessage(err: unknown): string {
   if (err instanceof Anthropic.APIError) {
-    if (err.status === 401) return "Claude API key is invalid or expired. Check ANTHROPIC_API_KEY.";
-    if (err.status === 429) return "Claude API rate limit reached — wait a moment and retry.";
-    if (err.status === 529) return "Claude API is overloaded — retry shortly.";
-    return `Claude API error (${err.status ?? "network"}).`;
+    if (err.status === 401) return "The AI service key is invalid or expired — check ANTHROPIC_API_KEY.";
+    if (err.status === 429) return "The AI service is rate-limited — wait a moment and retry.";
+    if (err.status === 529) return "The AI service is overloaded — retry shortly.";
+    return `AI service error (${err.status ?? "network"}).`;
   }
   return err instanceof Error ? err.message : "Unexpected error.";
 }

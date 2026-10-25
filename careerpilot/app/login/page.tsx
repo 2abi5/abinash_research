@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Icon from "@/components/Icon";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,15 +37,25 @@ export default function LoginPage() {
 
   return (
     <div className="login-wrap">
-      <div className="card login-card">
-        <div className="login-logo">✈ CareerPilot</div>
-        <div className="login-sub">Your AI job-search copilot</div>
+      <div className="card login-card anim">
+        <div className="login-head">
+          <span className="login-mark">
+            <Icon name="plane" size={24} strokeWidth={2} />
+          </span>
+          <div className="login-logo">
+            Career<b>Pilot</b>
+          </div>
+        </div>
+        <p className="login-sub">Your AI job-search copilot</p>
         <form onSubmit={submit}>
           <label className="field" htmlFor="u">Username</label>
           <input
             id="u"
             type="text"
             autoComplete="username"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -58,9 +69,14 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {error && <div className="error">{error}</div>}
-          <button className="btn" style={{ width: "100%", marginTop: 18 }} disabled={busy}>
-            {busy ? <span className="spinner" /> : "Sign in"}
+          {error && (
+            <div className="error">
+              <Icon name="alert" size={16} style={{ marginTop: 2 }} />
+              <span>{error}</span>
+            </div>
+          )}
+          <button className="btn" style={{ width: "100%", marginTop: 20 }} disabled={busy}>
+            {busy ? <span className="spinner" /> : <>Sign in <Icon name="external" size={14} /></>}
           </button>
         </form>
       </div>

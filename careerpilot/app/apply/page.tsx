@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Nav from "@/components/Nav";
+import Icon from "@/components/Icon";
 import { KEYS, TrackedApp, loadLS, saveLS } from "@/lib/storage";
 import type { ApplyKit } from "@/app/api/apply/kit/route";
 
@@ -19,7 +20,7 @@ function CopyBtn({ text }: { text: string }) {
         setTimeout(() => setDone(false), 1500);
       }}
     >
-      {done ? "Copied ✓" : "Copy"}
+      <Icon name={done ? "check" : "copy"} size={13} /> {done ? "Copied" : "Copy"}
     </button>
   );
 }
@@ -101,12 +102,12 @@ export default function ApplyPage() {
 
         {!hasCv && (
           <div className="notice">
-            ⚠️ No CV on file yet — <Link href="/cv">add one in CV Studio</Link> so kits can be
+            No CV on file yet — <Link href="/cv">add one in CV Studio</Link> so kits can be
             grounded in your real experience.
           </div>
         )}
 
-        <div className="card">
+        <div className="card anim">
           <div className="grid grid-2">
             <div>
               <label className="field">Job title *</label>
@@ -137,9 +138,9 @@ export default function ApplyPage() {
           {error && <div className="error">{error}</div>}
           <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
             <button className="btn" onClick={generate} disabled={busy}>
-              {busy ? <span className="spinner" /> : "🚀 Generate application kit"}
+              {busy ? <span className="spinner" /> : <><Icon name="rocket" size={15} /> Generate application kit</>}
             </button>
-            <button className="btn ghost" onClick={addManual}>+ Track this application</button>
+            <button className="btn ghost" onClick={addManual}><Icon name="plus" size={15} /> Track this application</button>
           </div>
         </div>
 
@@ -147,7 +148,7 @@ export default function ApplyPage() {
           <div style={{ display: "grid", gap: 16, marginTop: 16 }}>
             <div className="card">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h3 className="section" style={{ margin: 0 }}>✉️ Cover letter</h3>
+                <h3 className="section" style={{ margin: 0 }}><Icon name="mail" size={14} /> Cover letter</h3>
                 <CopyBtn text={kit.coverLetter} />
               </div>
               <div style={{ color: "var(--muted)", fontSize: 13.5, margin: "8px 0" }}>
@@ -160,16 +161,16 @@ export default function ApplyPage() {
             <div className="grid grid-2">
               <div className="card">
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <h3 className="section" style={{ margin: 0 }}>🎯 Tailored pitch</h3>
+                  <h3 className="section" style={{ margin: 0 }}><Icon name="target" size={14} /> Tailored pitch</h3>
                   <CopyBtn text={kit.tailoredPitch} />
                 </div>
                 <div className="output" style={{ marginTop: 10 }}>{kit.tailoredPitch}</div>
-                <h3 className="section" style={{ marginTop: 16 }}>💬 LinkedIn message</h3>
+                <h3 className="section" style={{ marginTop: 18 }}><Icon name="message" size={14} /> Outreach message</h3>
                 <div className="output">{kit.linkedinMessage}</div>
                 <div style={{ marginTop: 8 }}><CopyBtn text={kit.linkedinMessage} /></div>
               </div>
               <div className="card">
-                <h3 className="section">📌 CV bullets tuned for this job</h3>
+                <h3 className="section"><Icon name="layers" size={14} /> CV bullets tuned for this job</h3>
                 <ul className="clean">
                   {kit.bulletRewrites.map((b, i) => <li key={i}>{b}</li>)}
                 </ul>
@@ -179,7 +180,7 @@ export default function ApplyPage() {
 
             <div className="grid grid-2">
               <div className="card">
-                <h3 className="section">🗣 Screening answers</h3>
+                <h3 className="section"><Icon name="user" size={14} /> Screening answers</h3>
                 {kit.answers.map((a, i) => (
                   <div key={i} style={{ marginBottom: 14 }}>
                     <b style={{ fontSize: 14 }}>{a.q}</b>
@@ -188,7 +189,7 @@ export default function ApplyPage() {
                 ))}
               </div>
               <div className="card">
-                <h3 className="section">🎤 Interview prep</h3>
+                <h3 className="section"><Icon name="bulb" size={14} /> Interview prep</h3>
                 <ul className="clean">
                   {kit.interviewPrep.map((p, i) => <li key={i}>{p}</li>)}
                 </ul>
@@ -199,7 +200,8 @@ export default function ApplyPage() {
 
         <div className="card" style={{ marginTop: 16 }}>
           <h3 className="section">
-            📋 Application tracker {tracker.length > 0 && <span className="badge">{tracker.length}</span>}
+            <Icon name="list" size={14} /> Application tracker{" "}
+            {tracker.length > 0 && <span className="badge">{tracker.length}</span>}
           </h3>
           {tracker.length === 0 ? (
             <p style={{ color: "var(--muted)" }}>
@@ -218,7 +220,7 @@ export default function ApplyPage() {
                     <tr key={t.id}>
                       <td>
                         {t.url ? (
-                          <a href={t.url} target="_blank" rel="noopener noreferrer">{t.title} ↗</a>
+                          <a href={t.url} target="_blank" rel="noopener noreferrer">{t.title} <Icon name="external" size={12} /></a>
                         ) : (
                           t.title
                         )}
@@ -258,7 +260,7 @@ export default function ApplyPage() {
                           className="btn ghost small"
                           onClick={() => updateTracker(tracker.filter((x) => x.id !== t.id))}
                         >
-                          ✕
+                          <Icon name="x" size={14} />
                         </button>
                       </td>
                     </tr>

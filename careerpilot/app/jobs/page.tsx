@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Nav from "@/components/Nav";
+import Icon from "@/components/Icon";
 import { KEYS, TrackedApp, loadLS, saveLS } from "@/lib/storage";
 import type { Job, DeepLink } from "@/lib/jobs";
 import type { ScoutResult } from "@/app/api/jobs/scout/route";
@@ -16,6 +17,7 @@ function JobFinder() {
   const [links, setLinks] = useState<DeepLink[]>([]);
   const [scout, setScout] = useState<ScoutResult | null>(null);
   const [boardErrors, setBoardErrors] = useState<string[]>([]);
+  const [note, setNote] = useState("");
   const [busy, setBusy] = useState<"" | "search" | "scout">("");
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
@@ -48,6 +50,7 @@ function JobFinder() {
       setJobs(data.jobs);
       setLinks(data.links);
       setBoardErrors(data.errors || []);
+      setNote(data.note || "");
       setSearched(true);
     } catch {
       setError("Network error — try again.");
@@ -100,7 +103,7 @@ function JobFinder() {
         Live listings from open job boards, AI web scouting, and pre-filled searches on the big boards.
       </p>
 
-      <div className="card">
+      <div className="card anim">
         <div className="grid grid-2">
           <div>
             <label className="field">Keywords</label>
@@ -127,8 +130,8 @@ function JobFinder() {
           <div style={{ marginTop: 12 }}>
             <span style={{ color: "var(--muted)", fontSize: 13, marginRight: 8 }}>From your CV analysis:</span>
             {suggestions.map((s) => (
-              <button key={s} className="chip" style={{ cursor: "pointer" }} onClick={() => search(s)}>
-                {s}
+              <button key={s} className="chip" onClick={() => search(s)}>
+                <Icon name="search" size={12} /> {s}
               </button>
             ))}
           </div>
@@ -136,21 +139,21 @@ function JobFinder() {
         {error && <div className="error">{error}</div>}
         <div style={{ display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }}>
           <button className="btn" onClick={() => search()} disabled={busy !== ""}>
-            {busy === "search" ? <span className="spinner" /> : "🔎 Search live boards"}
+            {busy === "search" ? <span className="spinner" /> : <><Icon name="search" size={15} /> Search live boards</>}
           </button>
           <button className="btn ghost" onClick={runScout} disabled={busy !== ""}>
-            {busy === "scout" ? <span className="spinner" /> : "🤖 AI web scout"}
+            {busy === "scout" ? <span className="spinner" /> : <><Icon name="bot" size={15} /> AI web scout</>}
           </button>
         </div>
       </div>
 
       {links.length > 0 && (
         <div className="card" style={{ marginTop: 16 }}>
-          <h3 className="section">Open this search on the big boards</h3>
+          <h3 className="section"><Icon name="link" size={14} /> Open this search on the big boards</h3>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             {links.map((l) => (
               <a key={l.board} href={l.url} target="_blank" rel="noopener noreferrer" className="btn ghost small">
-                {l.board} ↗
+                {l.board} <Icon name="external" size={12} />
               </a>
             ))}
           </div>
@@ -158,8 +161,8 @@ function JobFinder() {
       )}
 
       {scout && (
-        <div className="card" style={{ marginTop: 16 }}>
-          <h3 className="section">🤖 AI scout findings</h3>
+        <div className="card anim" style={{ marginTop: 16 }}>
+          <h3 className="section"><Icon name="bot" size={14} /> AI scout findings</h3>
           <p style={{ color: "var(--muted)", fontSize: 14 }}>{scout.summary}</p>
           {scout.findings.map((f, i) => (
             <div className="job" key={i}>
@@ -168,7 +171,7 @@ function JobFinder() {
                 <div className="job-meta">{f.location} · {f.note}</div>
               </div>
               <div className="job-actions">
-                <a className="btn small" href={f.url} target="_blank" rel="noopener noreferrer">View ↗</a>
+                <a className="btn small" href={f.url} target="_blank" rel="noopener noreferrer">View <Icon name="external" size={13} /></a>
                 <button
                   className="btn ghost small"
                   disabled={tracked.has(`scout-${f.url}`)}
@@ -185,12 +188,14 @@ function JobFinder() {
       {searched && (
         <div className="card" style={{ marginTop: 16 }}>
           <h3 className="section">
-            Live listings {jobs.length > 0 && <span className="badge">{jobs.length}</span>}
+            <Icon name="briefcase" size={14} /> Live listings{" "}
+            {jobs.length > 0 && <span className="badge">{jobs.length}</span>}
           </h3>
           {boardErrors.length > 0 && (
             <div className="notice">Some boards were unreachable: {boardErrors.join(", ")}.</div>
           )}
-          {jobs.length === 0 && (
+          {note && <div className="notice">{note}</div>}
+          {jobs.length === 0 && !note && (
             <p style={{ color: "var(--muted)" }}>
               No matches on the open boards — try the AI scout or the big-board links above.
             </p>
@@ -213,7 +218,7 @@ function JobFinder() {
                 )}
               </div>
               <div className="job-actions">
-                <a className="btn small" href={j.url} target="_blank" rel="noopener noreferrer">Apply ↗</a>
+                <a className="btn small" href={j.url} target="_blank" rel="noopener noreferrer">Apply <Icon name="external" size={13} /></a>
                 <button
                   className="btn ghost small"
                   disabled={tracked.has(j.id)}

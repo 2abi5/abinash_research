@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { MODEL, anthropic, apiErrorMessage, extractJson, responseText } from "@/lib/anthropic";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 const SYSTEM = `You are a professional CV writer who produces clean, ATS-friendly, achievement-driven CVs.
 Rules: never invent employers, dates, degrees or certifications; you may only rephrase, reorganize,

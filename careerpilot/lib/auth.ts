@@ -4,11 +4,16 @@
 const encoder = new TextEncoder();
 
 function getSecret(): string {
-  return (
-    process.env.AUTH_SECRET ||
-    // Fallback: derive a signing secret from the credentials themselves so the
-    // app still works when AUTH_SECRET is unset. Setting AUTH_SECRET is better.
-    `cp::${process.env.AUTH_USERNAME || ""}::${process.env.AUTH_PASSWORD || ""}`
+  // AUTH_SECRET is required: deriving a fallback from the credentials would let
+  // a leaked session token be cracked offline. Login fails closed without it.
+  return process.env.AUTH_SECRET?.trim() || "";
+}
+
+export function authConfigured(): boolean {
+  return Boolean(
+    process.env.AUTH_USERNAME?.trim() &&
+      process.env.AUTH_PASSWORD?.trim() &&
+      process.env.AUTH_SECRET?.trim(),
   );
 }
 
@@ -40,7 +45,7 @@ export async function createSessionToken(username: string): Promise<string> {
 
 /** Verify a session token; returns the username or null. */
 export async function verifySessionToken(token: string | undefined): Promise<string | null> {
-  if (!token) return null;
+  if (!token || !getSecret()) return null;
   const [b64, sig] = token.split(".");
   if (!b64 || !sig) return null;
   let payload: string;
@@ -64,7 +69,7 @@ export async function verifySessionToken(token: string | undefined): Promise<str
 export async function checkCredentials(username: string, password: string): Promise<boolean> {
   const envUser = process.env.AUTH_USERNAME;
   const envPass = process.env.AUTH_PASSWORD;
-  if (!envUser?.trim() || !envPass?.trim()) return false; // refuse logins when not configured
+  if (!authConfigured() || !envUser || !envPass) return false; // fail closed when not configured
   // Trim stray whitespace (paste/keyboard artifacts) and compare usernames
   // case-insensitively; passwords stay case-sensitive.
   const a = await hmacHex(`cred|${username.trim().toLowerCase()}|${password.trim()}`);
