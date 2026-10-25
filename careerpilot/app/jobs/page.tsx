@@ -21,6 +21,10 @@ function JobFinder() {
   const [busy, setBusy] = useState<"" | "search" | "scout">("");
   const [error, setError] = useState("");
   const [searched, setSearched] = useState(false);
+  // Which "keywords · location" each result card was produced for, so stale
+  // cards are labeled and cleared when a different search runs.
+  const [listFor, setListFor] = useState("");
+  const [scoutFor, setScoutFor] = useState("");
   const autoRan = useRef(false);
   const [tracked, setTracked] = useState<Set<string>>(new Set());
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -59,6 +63,12 @@ function JobFinder() {
       setBoardErrors(data.errors || []);
       setNote(data.note || "");
       setSearched(true);
+      const key = location.trim() ? `${term} · ${location.trim()}` : term;
+      setListFor(key);
+      if (scout && scoutFor !== key) {
+        setScout(null);
+        setScoutFor("");
+      }
     } catch {
       setError("Network error — try again.");
     } finally {
@@ -81,6 +91,15 @@ function JobFinder() {
       const data = await res.json();
       if (!res.ok) return setError(data.error || "Scout failed.");
       setScout(data);
+      const key = location.trim() ? `${term} · ${location.trim()}` : term;
+      setScoutFor(key);
+      if (searched && listFor !== key) {
+        setJobs([]);
+        setBoardErrors([]);
+        setNote("");
+        setSearched(false);
+        setListFor("");
+      }
     } catch {
       setError("Network error — try again.");
     } finally {
@@ -173,7 +192,10 @@ function JobFinder() {
 
       {scout && (
         <div className="card anim" style={{ marginTop: 16 }}>
-          <h3 className="section"><Icon name="bot" size={14} /> AI scout findings</h3>
+          <h3 className="section">
+            <Icon name="bot" size={14} /> AI scout findings{" "}
+            {scoutFor && <span className="badge">{scoutFor}</span>}
+          </h3>
           <p style={{ color: "var(--muted)", fontSize: 14 }}>{scout.summary}</p>
           {scout.findings.map((f, i) => (
             <div className="job" key={i}>
@@ -200,6 +222,7 @@ function JobFinder() {
         <div className="card" style={{ marginTop: 16 }}>
           <h3 className="section">
             <Icon name="briefcase" size={14} /> Live listings{" "}
+            {listFor && <span className="badge">{listFor}</span>}{" "}
             {jobs.length > 0 && <span className="badge">{jobs.length}</span>}
           </h3>
           {boardErrors.length > 0 && (

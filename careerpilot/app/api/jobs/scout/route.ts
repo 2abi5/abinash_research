@@ -43,7 +43,7 @@ Then output JSON with EXACTLY these keys:
   try {
     const client = anthropic();
     const tools = [
-      { type: "web_search_20260209", name: "web_search", max_uses: 4 } as Anthropic.ToolUnion,
+      { type: "web_search_20260209", name: "web_search", max_uses: 6 } as Anthropic.ToolUnion,
     ];
     const messages: Anthropic.MessageParam[] = [{ role: "user", content: prompt }];
     const params = {
