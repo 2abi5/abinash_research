@@ -158,10 +158,15 @@ function rank(jobs: Job[], query: string): Job[] {
     }
     return s;
   };
-  return jobs
-    .map((j) => ({ j, s: score(j), d: j.publishedAt ? Date.parse(j.publishedAt) : 0 }))
-    .sort((a, b) => b.s - a.s || b.d - a.d)
-    .map((x) => x.j);
+  return (
+    jobs
+      .map((j) => ({ j, s: score(j), d: j.publishedAt ? Date.parse(j.publishedAt) : 0 }))
+      // Boards fuzzy-match descriptions, returning unrelated roles ("accountant"
+      // → AI Trainer). Require at least one query term in the title or tags.
+      .filter((x) => terms.length === 0 || x.s > 0)
+      .sort((a, b) => b.s - a.s || b.d - a.d)
+      .map((x) => x.j)
+  );
 }
 
 export async function searchJobs(
@@ -178,10 +183,14 @@ export async function searchJobs(
   });
   const ranked = rank(jobs, query);
   const loc = location?.trim();
-  if (!loc) return { jobs: ranked.slice(0, 50), errors };
+  const noneRelevant =
+    jobs.length > 0 && ranked.length === 0
+      ? `The open boards (mostly remote tech roles) had nothing genuinely matching “${query}”. For this search, the LinkedIn/Indeed/Google buttons above and the AI web scout are the right tools.`
+      : undefined;
+  if (!loc) return { jobs: ranked.slice(0, 50), errors, note: noneRelevant };
 
   const filtered = ranked.filter((j) => locationMatches(j.location, loc));
-  let note: string | undefined;
+  let note: string | undefined = noneRelevant;
   if (filtered.length === 0 && ranked.length > 0) {
     note = `The open boards had ${ranked.length} “${query}” matches, but none located in “${loc}” (these boards skew remote/EU). For ${loc}, use the pre-filled LinkedIn/Indeed/Google links or the AI web scout.`;
   }
