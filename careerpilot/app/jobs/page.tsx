@@ -5,7 +5,8 @@ import { useSearchParams } from "next/navigation";
 import Nav from "@/components/Nav";
 import Icon from "@/components/Icon";
 import { KEYS, TrackedApp, loadLS, saveLS } from "@/lib/storage";
-import type { Job, DeepLink } from "@/lib/jobs";
+import { deepLinks } from "@/lib/jobs";
+import type { Job } from "@/lib/jobs";
 import type { ScoutResult } from "@/app/api/jobs/scout/route";
 import type { CvAnalysis } from "@/app/api/cv/analyze/route";
 
@@ -14,7 +15,6 @@ function JobFinder() {
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
   const [jobs, setJobs] = useState<Job[]>([]);
-  const [links, setLinks] = useState<DeepLink[]>([]);
   const [scout, setScout] = useState<ScoutResult | null>(null);
   const [boardErrors, setBoardErrors] = useState<string[]>([]);
   const [note, setNote] = useState("");
@@ -56,7 +56,6 @@ function JobFinder() {
       const data = await res.json();
       if (!res.ok) return setError(data.error || "Search failed.");
       setJobs(data.jobs);
-      setLinks(data.links);
       setBoardErrors(data.errors || []);
       setNote(data.note || "");
       setSearched(true);
@@ -156,11 +155,14 @@ function JobFinder() {
         </div>
       </div>
 
-      {links.length > 0 && (
+      {query.trim().length > 1 && (
         <div className="card" style={{ marginTop: 16 }}>
           <h3 className="section"><Icon name="link" size={14} /> Open this search on the big boards</h3>
+          <p style={{ color: "var(--muted)", fontSize: 13, margin: "0 0 10px" }}>
+            Always in sync with the keywords and location above.
+          </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {links.map((l) => (
+            {deepLinks(query.trim(), location.trim() || undefined).map((l) => (
               <a key={l.board} href={l.url} target="_blank" rel="noopener noreferrer" className="btn ghost small">
                 {l.board} <Icon name="external" size={12} />
               </a>
