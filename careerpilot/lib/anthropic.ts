@@ -5,12 +5,20 @@ export const MODEL = process.env.CLAUDE_MODEL || "claude-opus-5-5";
 let _client: Anthropic | null = null;
 
 export function anthropic(): Anthropic {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const key = process.env.ANTHROPIC_API_KEY?.trim();
+  if (!key) {
     throw new Error(
       "ANTHROPIC_API_KEY is not set. Add it in Vercel → Project → Settings → Environment Variables.",
     );
   }
-  if (!_client) _client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  // Catch masked copies ("sk-ant-usr-1bQA•••") pasted from UIs that hide keys.
+  if (!/^[\x21-\x7e]+$/.test(key)) {
+    throw new Error(
+      "ANTHROPIC_API_KEY contains invalid characters (looks like a masked '•••' copy). " +
+        "Re-paste the FULL key in Vercel → Settings → Environment Variables, then redeploy.",
+    );
+  }
+  if (!_client) _client = new Anthropic({ apiKey: key });
   return _client;
 }
 
