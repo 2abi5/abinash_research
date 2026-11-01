@@ -61,7 +61,17 @@ was checked. They are **snapshots and they go stale every cycle**. See
 `skills/research-pro/venues/VERIFY.md` — the skill is required to re-read the
 live call for papers before it signs off on compliance.
 
-## 5. Writing-flow material
+## 5. Bibliographic data
+
+`verify_citations.py` and `lit_scan.py` query public APIs and vendor nothing from
+them: **Crossref** (publisher metadata), **OpenAlex** (open scholarly graph, no key,
+including the retraction flag it carries from **Retraction Watch**), **Semantic
+Scholar**, **arXiv**, and **dblp**. Each has its own terms of use and rate limits;
+the scripts pace requests, identify themselves, and honour the Crossref and OpenAlex
+polite pools when given a `--mailto`. Reporting of systematic reviews follows
+**PRISMA 2020**.
+
+## 6. Writing-flow material
 
 The reverse-outlining and transition-signposting practice in
 `references/12-prose-quality.md` is standard university writing-center doctrine,

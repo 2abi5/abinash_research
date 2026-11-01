@@ -1,0 +1,18 @@
+\documentclass{article}
+\begin{document}
+\section{Introduction}
+Pruning is old. Pruning is slow. Pruning is wrong here. We route instead. We gate
+once. We dispatch twice. The gain is real --- and it is not about capacity, but
+about timing --- which is the whole point. Why does per-layer routing fail? Because
+the signal arrives late. Why does ours not? Because it waits.
+
+Routing is not just a trick, but a principle. The gate sees everything --- the full
+sequence --- before it commits. That matters. A lot. The result: 4x fewer FLOPs ---
+at equal accuracy --- on ImageNet.
+
+\section{Method}
+We pool. We score. We dispatch. The bank has eight experts. Two are active per input.
+The gate is a two-layer MLP. It is small. It is cheap. It is enough.
+
+Overall, this section has shown that the gate is simple and the dispatch is cheap.
+\end{document}

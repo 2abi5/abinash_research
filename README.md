@@ -3,19 +3,19 @@
 Claude Code skills that take a research paper from an idea to a submission — with
 gates that block instead of advising.
 
-Two skills, twelve slash commands, nine deterministic checkers, and dated compliance
+Two skills, twelve slash commands, ten deterministic checkers, and dated compliance
 profiles for nine top venues. Everything is a routed reference file, so a request to
 tighten one abstract does not load a ten-stage pipeline.
 
 ```
 S0 Intake ........ what did you find, and why doesn't a reviewer already know it
 S1 Architecture .. story spine + section budget + project scaffold
-S2 Literature .... search protocol, screening, extraction, synthesis
+S2 Literature .... seed expansion, screening, the map, synthesis
 S3 Evidence plan . one experiment per claim, decided BEFORE drafting
 S4 Draft ......... section by section, paragraph by paragraph
      └─ GATE 1  every claim mapped to evidence, or cut
 S5 Figures ....... teaser, architecture, analysis, results tables
-S6 Citations ..... every reference resolved against a real record
+S6 Citations ..... every reference resolved; load-bearing ones traced to a page
      └─ GATE 2  zero unverifiable references
 S7 Prose ......... authorial voice, flow, terminology; disclosure drafted
 S8 Compliance .... live venue rules: length, format, anonymity, checklists
@@ -72,10 +72,10 @@ says what it could not check.
 |---|---|
 | `/rp-new` | Intake interview, story spine, scaffold the project |
 | `/rp-calibrate` | Learn a target profile from reference papers; compare your draft to it |
-| `/rp-lit` | Scoping scan or full systematic review |
+| `/rp-lit` | Seed expansion through OpenAlex, scoping scan, or full systematic review |
 | `/rp-draft` | Draft or rewrite one section |
 | `/rp-figures` | Design or audit figures and tables |
-| `/rp-cite` | Verify every citation (Gate 2) |
+| `/rp-cite` | Verify every citation and work the Layer-3 list (Gate 2) |
 | `/rp-humanize` | Fix machine-sounding prose; draft the AI disclosure |
 | `/rp-venue` | Check against a venue's hard rules (Gate 3) |
 | `/rp-review` | Five-seat adversarial review panel |
@@ -85,7 +85,7 @@ says what it could not check.
 
 Or just describe what you want — the skills trigger on intent.
 
-## The four things people ask for most
+## The five things people ask for most
 
 ### Upload a paper, match it
 
@@ -147,6 +147,31 @@ committed. That keeps hand-typed numbers out of a project several people can edi
 `references/20-overleaf.md` covers conflicts, compile timeouts, shell-escape, and the
 free-plan zip round-trip.
 
+### Map the literature before you write
+
+```bash
+python3 $S/lit_scan.py --seed 10.1000/closest.2023 --seed arXiv:2401.01234 \
+        --search "the mechanism, phrased as the field would" --since 2019 \
+        --sentinels 10.1000/a-paper-you-know-matters.2024 --out lit/
+```
+
+Give it the two to five papers nearest your idea. It pulls what they cite and what
+cites them from OpenAlex (no key needed), ranks the union by how many of your seeds
+each candidate touches, and writes three things: the ranked candidate list with the
+query, date and hit count recorded for the search record; a saturation table that
+says how many new papers each seed added, which is the stop rule made measurable; and
+a map skeleton whose `Fails when` column is what the gap paragraph gets written from.
+
+Forward citation chasing is the step people skip and the step that finds the paper
+published four months ago that scoops you. `--sentinels` is the other check: name the
+papers you already know matter, and the report says whether the seeds reached them. A
+search that misses what you know will miss what you do not.
+
+It produces leads. Every candidate is still opened, read at the depth its role
+requires, and verified before it becomes a citation. The worked example in
+`examples/05-lit-map-to-gap.md` runs the whole chain on a recorded (fictional)
+neighbourhood.
+
 ### Is it ready?
 
 ```bash
@@ -165,8 +190,9 @@ not check.
 
 | Script | Finds |
 |---|---|
-| `verify_citations.py` | Fabricated references, metadata mismatches, duplicates, uncited entries, unupgraded preprints, unprotected capitalisation |
-| `prose_metrics.py` | Banned phrases with line numbers, sentence-length variance, hedge stacking, transition-opener density, empty topic sentences, nominalisation and passive rates |
+| `verify_citations.py` | Fabricated references (a near-miss title hit is rejected unless author or year agree), retracted papers, metadata mismatches, preprints whose published version exists, duplicates, uncited entries, citation stacks and `[12]`-as-a-noun, and the **Layer-3 worklist**: every load-bearing citation, with whether the ledger records where the source supports it |
+| `prose_metrics.py` | Banned phrases with line numbers, sentence-length variance, hedge stacking, transition-opener density, empty topic sentences, em-dash density, "not X, but Y" frames, repeated openers, section-closing summaries, the over-corrected staccato register; `--paragraphs` for the rewrite loop, `--compare` for before/after deltas |
+| `lit_scan.py` | Seed papers → backward references and forward citations from OpenAlex, ranked by how many seeds each candidate touches; saturation per seed (the stop rule), sentinel recall, retracted candidates, the search record, and the map skeleton |
 | `venue_check.py` | Page limit, required sections, anonymity leaks, named repo links, gap tokens, **prompt injection** (source and PDF text) |
 | `latex_lint.py` | Undefined refs, duplicate labels, caption/label order, figure-vs-table caption placement, `\hline` and vertical rules, unreferenced floats, overfull boxes |
 | `figure_audit.py` | Raster where vector belongs, raster hidden in a PDF, DPI at placement width, **natural size vs placement width** (the scaling that shrinks your fonts), unembedded fonts |
@@ -189,14 +215,18 @@ your own from `venues/_template.md`.
 ## Where this draws its lines
 
 - **Never fabricates a reference.** Verified against Crossref / OpenAlex / Semantic
-  Scholar / arXiv, or marked `[NEEDS SOURCE]` for you to fill. A plausible-looking
-  DOI is the single most damaging thing a writing tool can produce.
+  Scholar / arXiv / dblp, or marked `[NEEDS SOURCE]` for you to fill. A plausible-looking
+  DOI is the single most damaging thing a writing tool can produce. A title-search hit
+  is not verification either: the first author or the year has to agree, a 404 is
+  treated as evidence and a timeout is not, and retracted records are flagged.
 - **Never invents a result.** No numbers, no "improves by 3.2%", no significance
   claim you did not supply. Unfilled cells stay `[TBD]`.
 - **Fixes prose; does not evade detectors.** `/rp-humanize` removes the machine
   register — flat rhythm, abstract nouns, stacked hedges, empty paragraphs — because
-  that is what *reviewers* penalize. It will not help conceal AI assistance a venue
-  requires you to disclose, and it ships with the disclosure templates instead.
+  that is what *reviewers* penalize. It also warns when a rewrite has overshot into
+  the other machine register: staccato fragments, rhetorical questions, a dash in
+  every sentence. It will not help conceal AI assistance a venue requires you to
+  disclose, and it ships with the disclosure templates instead.
   ICML desk-rejected 497 submissions in one cycle over LLM-policy violations; ICLR
   has desk-rejected LLM-generated papers outright. Disclosure is cheaper than the
   risk by orders of magnitude.
@@ -212,9 +242,13 @@ your own from `venues/_template.md`.
 - **A tool cannot supply a contribution.** These skills make a real finding legible
   and defensible, and make a thin one visibly thin. That second outcome is the useful
   one, and it arrives months earlier than a reviewer's version of it.
-- **Layer 3 of citation checking is manual.** Whether a source *says what you claim
-  it says* is not automatable. The scripts check existence and metadata; you open the
-  PDF.
+- **Layer 3 of citation checking is still a person reading a PDF.** The verifier now
+  extracts every load-bearing citation into a worklist and checks that the ledger
+  records where each source supports its claim, but whether it *does* is decided by
+  opening it. The worklist makes the work visible; it does not do it.
+- **The literature scanner produces leads, not a bibliography.** It sees what
+  OpenAlex indexes, it needs the network, and a candidate becomes a citation only after
+  it has been read and verified.
 - **Venue profiles are snapshots.** Re-verify. Always.
 - **An exemplar profile describes what got accepted, not a formula for acceptance.**
   Matching a NeurIPS paper's shape does not give you a NeurIPS contribution.
@@ -223,7 +257,7 @@ your own from `venues/_template.md`.
 ## Layout
 
 ```
-skills/research-pro/         orchestrator: 23 references, 9 scripts, 9 venue profiles, 4 worked examples, templates
+skills/research-pro/         orchestrator: 23 references, 10 scripts, 9 venue profiles, 6 worked examples, templates
 skills/paper-reviewer/       five-seat adversarial review panel
 commands/                    twelve /rp-* slash commands
 tests/                       deliberately broken fixtures + `run_checks.sh`, which every checker must still catch
@@ -241,6 +275,12 @@ tests/                       deliberately broken fixtures + `run_checks.sh`, whi
 - **Limitations** — ritual → specific, and the line you must not cross.
 - **Gate 1 catching an unsupported abstract claim** — the extraction, the two honest
   ways to close it, and why hedging is worse than either.
+- **From the literature map to the gap** — a recorded scan, the reading depths, the
+  filled map, and the gap paragraph and Related Work groupings read off its
+  `Fails when` column.
+- **The citation that did not say that** — the real Layer-3 worklist on a fixture
+  with a citation stack, a retracted source and an unfinished ledger row, each closed
+  honestly, plus the claim-drift case no script catches.
 
 ## Credits
 

@@ -1,0 +1,841 @@
+{
+ "https://api.openalex.org/works/W2000000001": {
+  "status": "ok",
+  "body": {
+   "id": "https://openalex.org/W2000000001",
+   "doi": "https://doi.org/10.1000/perlayer.2021",
+   "title": "Per-Layer Expert Routing for Conditional Computation",
+   "display_name": "Per-Layer Expert Routing for Conditional Computation",
+   "publication_year": 2021,
+   "cited_by_count": 410,
+   "referenced_works": [
+    "https://openalex.org/W1",
+    "https://openalex.org/W2",
+    "https://openalex.org/W3",
+    "https://openalex.org/W4",
+    "https://openalex.org/W5"
+   ],
+   "authorships": [
+    {
+     "author": {
+      "display_name": "Dana Okafor"
+     }
+    },
+    {
+     "author": {
+      "display_name": "Coauthor 0"
+     }
+    },
+    {
+     "author": {
+      "display_name": "Coauthor 1"
+     }
+    }
+   ],
+   "primary_location": {
+    "source": {
+     "display_name": "NeurIPS"
+    }
+   },
+   "open_access": {
+    "oa_url": null
+   },
+   "type": "article",
+   "is_retracted": false
+  }
+ },
+ "https://api.openalex.org/works/doi:10.1000/routing.2021": {
+  "status": "ok",
+  "body": {
+   "id": "https://openalex.org/W2000000002",
+   "doi": "https://doi.org/10.1000/routing.2021",
+   "title": "Global Gating from Pooled Context",
+   "display_name": "Global Gating from Pooled Context",
+   "publication_year": 2023,
+   "cited_by_count": 95,
+   "referenced_works": [
+    "https://openalex.org/W3",
+    "https://openalex.org/W4",
+    "https://openalex.org/W6",
+    "https://openalex.org/W2000000001"
+   ],
+   "authorships": [
+    {
+     "author": {
+      "display_name": "Ravi Menon"
+     }
+    },
+    {
+     "author": {
+      "display_name": "Coauthor 0"
+     }
+    },
+    {
+     "author": {
+      "display_name": "Coauthor 1"
+     }
+    }
+   ],
+   "primary_location": {
+    "source": {
+     "display_name": "ICML"
+    }
+   },
+   "open_access": {
+    "oa_url": null
+   },
+   "type": "article",
+   "is_retracted": false
+  }
+ },
+ "https://api.openalex.org/works?filter=ids.openalex:W1|W2|W3|W4|W5&per-page=50&select=id,doi,title,display_name,publication_year,cited_by_count,referenced_works,authorships,primary_location,open_access,type,is_retracted": {
+  "status": "ok",
+  "body": {
+   "meta": {
+    "count": 5,
+    "next_cursor": null
+   },
+   "results": [
+    {
+     "id": "https://openalex.org/W1",
+     "doi": "https://doi.org/10.1000/experts.2017",
+     "title": "Sparsely-Gated Expert Layers at Scale",
+     "display_name": "Sparsely-Gated Expert Layers at Scale",
+     "publication_year": 2017,
+     "cited_by_count": 5200,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Noa Shalev"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "ICLR"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W2",
+     "doi": null,
+     "title": "Adaptive Compute Budgets for Sequence Models",
+     "display_name": "Adaptive Compute Budgets for Sequence Models",
+     "publication_year": 2016,
+     "cited_by_count": 1400,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Alexei Gorban"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "arXiv"
+      }
+     },
+     "open_access": {
+      "oa_url": "https://example.org/2"
+     },
+     "type": "preprint",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W3",
+     "doi": "https://doi.org/10.1000/switching.2022",
+     "title": "Switching Experts for Trillion-Parameter Models",
+     "display_name": "Switching Experts for Trillion-Parameter Models",
+     "publication_year": 2022,
+     "cited_by_count": 3100,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Marta Ferreira"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "JMLR"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W4",
+     "doi": "https://doi.org/10.1000/prune.2015",
+     "title": "Learning Which Weights to Keep",
+     "display_name": "Learning Which Weights to Keep",
+     "publication_year": 2015,
+     "cited_by_count": 6900,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Soon-Ho Han"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "NeurIPS"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W5",
+     "doi": "https://doi.org/10.1000/residual.2016",
+     "title": "Residual Blocks for Very Deep Vision Networks",
+     "display_name": "Residual Blocks for Very Deep Vision Networks",
+     "publication_year": 2016,
+     "cited_by_count": 19000,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Kai Hennig"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "CVPR"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    }
+   ]
+  }
+ },
+ "https://api.openalex.org/works?filter=ids.openalex:W3|W4|W6|W2000000001&per-page=50&select=id,doi,title,display_name,publication_year,cited_by_count,referenced_works,authorships,primary_location,open_access,type,is_retracted": {
+  "status": "ok",
+  "body": {
+   "meta": {
+    "count": 4,
+    "next_cursor": null
+   },
+   "results": [
+    {
+     "id": "https://openalex.org/W3",
+     "doi": "https://doi.org/10.1000/switching.2022",
+     "title": "Switching Experts for Trillion-Parameter Models",
+     "display_name": "Switching Experts for Trillion-Parameter Models",
+     "publication_year": 2022,
+     "cited_by_count": 3100,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Marta Ferreira"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "JMLR"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W4",
+     "doi": "https://doi.org/10.1000/prune.2015",
+     "title": "Learning Which Weights to Keep",
+     "display_name": "Learning Which Weights to Keep",
+     "publication_year": 2015,
+     "cited_by_count": 6900,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Soon-Ho Han"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "NeurIPS"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W6",
+     "doi": "https://doi.org/10.1000/kim.2024",
+     "title": "Magnitude Pruning Needs Structure",
+     "display_name": "Magnitude Pruning Needs Structure",
+     "publication_year": 2024,
+     "cited_by_count": 40,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Jiwon Kim"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "CVPR"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W2000000001",
+     "doi": "https://doi.org/10.1000/perlayer.2021",
+     "title": "Per-Layer Expert Routing for Conditional Computation",
+     "display_name": "Per-Layer Expert Routing for Conditional Computation",
+     "publication_year": 2021,
+     "cited_by_count": 410,
+     "referenced_works": [
+      "https://openalex.org/W1",
+      "https://openalex.org/W2",
+      "https://openalex.org/W3",
+      "https://openalex.org/W4",
+      "https://openalex.org/W5"
+     ],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Dana Okafor"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "NeurIPS"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    }
+   ]
+  }
+ },
+ "https://api.openalex.org/works?filter=cites:W2000000001,publication_year:>2018&sort=cited_by_count:desc&per-page=100&cursor=*&select=id,doi,title,display_name,publication_year,cited_by_count,referenced_works,authorships,primary_location,open_access,type,is_retracted": {
+  "status": "ok",
+  "body": {
+   "meta": {
+    "count": 4,
+    "next_cursor": null
+   },
+   "results": [
+    {
+     "id": "https://openalex.org/W9",
+     "doi": "https://doi.org/10.1000/survey.2023",
+     "title": "A Survey of Conditional Computation",
+     "display_name": "A Survey of Conditional Computation",
+     "publication_year": 2023,
+     "cited_by_count": 210,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Tomas Berg"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "ACM Computing Surveys"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W7",
+     "doi": "https://doi.org/10.1000/token.2022",
+     "title": "Token-Level Routing Is Not Enough",
+     "display_name": "Token-Level Routing Is Not Enough",
+     "publication_year": 2022,
+     "cited_by_count": 120,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Lea Fischer"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "ICLR"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W2000000002",
+     "doi": "https://doi.org/10.1000/routing.2021",
+     "title": "Global Gating from Pooled Context",
+     "display_name": "Global Gating from Pooled Context",
+     "publication_year": 2023,
+     "cited_by_count": 95,
+     "referenced_works": [
+      "https://openalex.org/W3",
+      "https://openalex.org/W4",
+      "https://openalex.org/W6",
+      "https://openalex.org/W2000000001"
+     ],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Ravi Menon"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "ICML"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W8",
+     "doi": "https://doi.org/10.1000/late.2024",
+     "title": "Late-Commitment Gating for Vision Transformers",
+     "display_name": "Late-Commitment Gating for Vision Transformers",
+     "publication_year": 2024,
+     "cited_by_count": 31,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Priya Nair"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "NeurIPS"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    }
+   ]
+  }
+ },
+ "https://api.openalex.org/works?filter=cites:W2000000002,publication_year:>2018&sort=cited_by_count:desc&per-page=100&cursor=*&select=id,doi,title,display_name,publication_year,cited_by_count,referenced_works,authorships,primary_location,open_access,type,is_retracted": {
+  "status": "ok",
+  "body": {
+   "meta": {
+    "count": 3,
+    "next_cursor": null
+   },
+   "results": [
+    {
+     "id": "https://openalex.org/W8",
+     "doi": "https://doi.org/10.1000/late.2024",
+     "title": "Late-Commitment Gating for Vision Transformers",
+     "display_name": "Late-Commitment Gating for Vision Transformers",
+     "publication_year": 2024,
+     "cited_by_count": 31,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Priya Nair"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "NeurIPS"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W10",
+     "doi": "https://doi.org/10.1000/collapse.2025",
+     "title": "Routing Collapse in Sparse Experts",
+     "display_name": "Routing Collapse in Sparse Experts",
+     "publication_year": 2025,
+     "cited_by_count": 12,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Yuki Tanaka"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "ICLR"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W11",
+     "doi": "https://doi.org/10.5555/jals.2021.0042",
+     "title": "Gradient Echo Regularisation Eliminates Overfitting",
+     "display_name": "Gradient Echo Regularisation Eliminates Overfitting",
+     "publication_year": 2021,
+     "cited_by_count": 9,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Tomasz Nowak"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "J. Applied Learning Systems"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": true
+    }
+   ]
+  }
+ },
+ "https://api.openalex.org/works?search=sparse%20expert%20routing&filter=from_publication_date:2019-01-01,type:article|preprint&sort=relevance_score:desc&per-page=100&cursor=*&select=id,doi,title,display_name,publication_year,cited_by_count,referenced_works,authorships,primary_location,open_access,type,is_retracted": {
+  "status": "ok",
+  "body": {
+   "meta": {
+    "count": 3,
+    "next_cursor": null
+   },
+   "results": [
+    {
+     "id": "https://openalex.org/W8",
+     "doi": "https://doi.org/10.1000/late.2024",
+     "title": "Late-Commitment Gating for Vision Transformers",
+     "display_name": "Late-Commitment Gating for Vision Transformers",
+     "publication_year": 2024,
+     "cited_by_count": 31,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Priya Nair"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "NeurIPS"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W13",
+     "doi": "https://doi.org/10.1000/inverted.2022",
+     "title": "Experts Choose Tokens: Inverted Routing",
+     "display_name": "Experts Choose Tokens: Inverted Routing",
+     "publication_year": 2022,
+     "cited_by_count": 480,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Yusuf Zaman"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "NeurIPS"
+      }
+     },
+     "open_access": {
+      "oa_url": null
+     },
+     "type": "article",
+     "is_retracted": false
+    },
+    {
+     "id": "https://openalex.org/W12",
+     "doi": "https://doi.org/10.1000/edge.2025",
+     "title": "Sparse Expert Routing for Edge Inference",
+     "display_name": "Sparse Expert Routing for Edge Inference",
+     "publication_year": 2025,
+     "cited_by_count": 3,
+     "referenced_works": [],
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Amina Diallo"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 0"
+       }
+      },
+      {
+       "author": {
+        "display_name": "Coauthor 1"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "arXiv"
+      }
+     },
+     "open_access": {
+      "oa_url": "https://example.org/12"
+     },
+     "type": "preprint",
+     "is_retracted": false
+    }
+   ]
+  }
+ }
+}

@@ -21,6 +21,8 @@ venv/
 # Working output from the skills (keep the repo to the skills themselves)
 /paper/
 /out/
+/lit/
+.cite_cache.json
 *.local.json
 *.local.yaml
 

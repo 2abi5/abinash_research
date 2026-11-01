@@ -64,6 +64,9 @@ Real reviewers, reliably:
 - **Check whether the abstract's number appears in a table.** Mismatches are found.
 - **Look for the failure case.** A paper with none is assumed to be hiding one.
 - **Skim the appendix at most.** Load-bearing content there is effectively absent.
+- **Open one or two citations they know.** A domain expert checks whether the paper
+  they wrote, or the one they teach, is characterised correctly. One misattribution
+  found there colours the reading of every other claim.
 - **Read the limitations section** where the venue requires one, and read a ritual
   one ("may not generalize") as evasion.
 - **Not re-run anything.** Reproducibility is judged from the paper and the artifact's

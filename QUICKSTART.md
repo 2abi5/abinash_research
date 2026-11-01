@@ -98,7 +98,7 @@ nothing; run it the night before a deadline and it costs hours.
 ## 7. Before you submit
 
 ```
-/rp-cite          # verify every reference (Gate 2)
+/rp-cite          # verify every reference, work the Layer-3 list (Gate 2)
 /rp-humanize      # kill the machine register, draft the AI disclosure
 /rp-venue neurips # hard rules, re-verified against the live CFP (Gate 3)
 /rp-review        # five-seat adversarial panel — the review you'd rather get now
@@ -122,6 +122,7 @@ You don't have to start at step 4.
 | A half-written draft | Point at the `.tex`: *"rewrite §3 using the research-pro skill"* |
 | Reviewer comments | `/rp-rebuttal` and paste them |
 | An Overleaf project | `/rp-overleaf setup` |
+| Two or three papers you know are close | `/rp-lit` with their DOIs: `lit_scan.py` expands them backward and forward through OpenAlex and ranks what it finds |
 | No topic yet | `/rp-lit "your area"` — scoping scan first |
 
 ## Overleaf
@@ -152,8 +153,18 @@ Git integration is a paid Overleaf feature and auth is token-only (Account Setti
 
 **Citation verification says BLOCKED**
 - No network. It needs `api.crossref.org`, `api.openalex.org`,
-  `api.semanticscholar.org`, `export.arxiv.org`. Structural checks alone do **not**
-  pass Gate 2 — that's deliberate.
+  `api.semanticscholar.org`, `dblp.org`, `export.arxiv.org`. Structural checks alone
+  do **not** pass Gate 2 — that's deliberate. `make check` caches answers in
+  `.cite_cache.json`, so a run that worked last week still works offline this week.
+
+**Citation verification says UNVERIFIED for a paper that exists**
+- Check the first author and year in the entry. A title match alone is not accepted,
+  and the report shows the nearest title the databases found so you can see the
+  disagreement.
+
+**Literature scan says BLOCKED**
+- It needs `api.openalex.org`. Do the expansion by hand (reference lists backward,
+  "cited by" forward) and still record every query, date and hit count.
 
 **"Unknown venue"**
 - `python3 ~/.claude/skills/research-pro/scripts/venue_check.py --list`

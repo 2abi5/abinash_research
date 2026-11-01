@@ -37,7 +37,7 @@ DIMENSIONS = [
 ]
 
 GATES = {
-    "G-CITE": "Every reference verified; no unresolved MISMATCH",
+    "G-CITE": "Every reference verified, none retracted, preprints upgraded, layer-3 log covers the load-bearing ones",
     "G-CLAIM": "Every abstract/introduction claim has supporting evidence",
     "G-VENUE": "No live desk-reject trigger (length, required sections, anonymity, template)",
     "G-ETHICS": "Ethics/IRB approval in place where human subjects or restricted data apply",
