@@ -1,0 +1,379 @@
+{
+ "generated": "2026-11-01",
+ "seeds": [
+  {
+   "id": "W2000000001",
+   "doi": "10.1000/perlayer.2021",
+   "title": "Per-Layer Expert Routing for Conditional Computation",
+   "year": 2021,
+   "venue": "NeurIPS",
+   "cited_by": 410,
+   "first_author": "Dana Okafor",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": [
+    "W1",
+    "W2",
+    "W3",
+    "W4",
+    "W5"
+   ]
+  },
+  {
+   "id": "W2000000002",
+   "doi": "10.1000/routing.2021",
+   "title": "Global Gating from Pooled Context",
+   "year": 2023,
+   "venue": "ICML",
+   "cited_by": 95,
+   "first_author": "Ravi Menon",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": [
+    "W3",
+    "W4",
+    "W6",
+    "W2000000001"
+   ]
+  }
+ ],
+ "works": {
+  "W2000000001": {
+   "id": "W2000000001",
+   "doi": "10.1000/perlayer.2021",
+   "title": "Per-Layer Expert Routing for Conditional Computation",
+   "year": 2021,
+   "venue": "NeurIPS",
+   "cited_by": 410,
+   "first_author": "Dana Okafor",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": [
+    "W1",
+    "W2",
+    "W3",
+    "W4",
+    "W5"
+   ]
+  },
+  "W1": {
+   "id": "W1",
+   "doi": "10.1000/experts.2017",
+   "title": "Sparsely-Gated Expert Layers at Scale",
+   "year": 2017,
+   "venue": "ICLR",
+   "cited_by": 5200,
+   "first_author": "Noa Shalev",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W2": {
+   "id": "W2",
+   "doi": "",
+   "title": "Adaptive Compute Budgets for Sequence Models",
+   "year": 2016,
+   "venue": "arXiv",
+   "cited_by": 1400,
+   "first_author": "Alexei Gorban",
+   "n_authors": 3,
+   "type": "preprint",
+   "oa_url": "https://example.org/2",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W3": {
+   "id": "W3",
+   "doi": "10.1000/switching.2022",
+   "title": "Switching Experts for Trillion-Parameter Models",
+   "year": 2022,
+   "venue": "JMLR",
+   "cited_by": 3100,
+   "first_author": "Marta Ferreira",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W4": {
+   "id": "W4",
+   "doi": "10.1000/prune.2015",
+   "title": "Learning Which Weights to Keep",
+   "year": 2015,
+   "venue": "NeurIPS",
+   "cited_by": 6900,
+   "first_author": "Soon-Ho Han",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W5": {
+   "id": "W5",
+   "doi": "10.1000/residual.2016",
+   "title": "Residual Blocks for Very Deep Vision Networks",
+   "year": 2016,
+   "venue": "CVPR",
+   "cited_by": 19000,
+   "first_author": "Kai Hennig",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W9": {
+   "id": "W9",
+   "doi": "10.1000/survey.2023",
+   "title": "A Survey of Conditional Computation",
+   "year": 2023,
+   "venue": "ACM Computing Surveys",
+   "cited_by": 210,
+   "first_author": "Tomas Berg",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W7": {
+   "id": "W7",
+   "doi": "10.1000/token.2022",
+   "title": "Token-Level Routing Is Not Enough",
+   "year": 2022,
+   "venue": "ICLR",
+   "cited_by": 120,
+   "first_author": "Lea Fischer",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W2000000002": {
+   "id": "W2000000002",
+   "doi": "10.1000/routing.2021",
+   "title": "Global Gating from Pooled Context",
+   "year": 2023,
+   "venue": "ICML",
+   "cited_by": 95,
+   "first_author": "Ravi Menon",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": [
+    "W3",
+    "W4",
+    "W6",
+    "W2000000001"
+   ]
+  },
+  "W8": {
+   "id": "W8",
+   "doi": "10.1000/late.2024",
+   "title": "Late-Commitment Gating for Vision Transformers",
+   "year": 2024,
+   "venue": "NeurIPS",
+   "cited_by": 31,
+   "first_author": "Priya Nair",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W6": {
+   "id": "W6",
+   "doi": "10.1000/kim.2024",
+   "title": "Magnitude Pruning Needs Structure",
+   "year": 2024,
+   "venue": "CVPR",
+   "cited_by": 40,
+   "first_author": "Jiwon Kim",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W10": {
+   "id": "W10",
+   "doi": "10.1000/collapse.2025",
+   "title": "Routing Collapse in Sparse Experts",
+   "year": 2025,
+   "venue": "ICLR",
+   "cited_by": 12,
+   "first_author": "Yuki Tanaka",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W11": {
+   "id": "W11",
+   "doi": "10.5555/jals.2021.0042",
+   "title": "Gradient Echo Regularisation Eliminates Overfitting",
+   "year": 2021,
+   "venue": "J. Applied Learning Systems",
+   "cited_by": 9,
+   "first_author": "Tomasz Nowak",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": true,
+   "referenced_works": []
+  },
+  "W13": {
+   "id": "W13",
+   "doi": "10.1000/inverted.2022",
+   "title": "Experts Choose Tokens: Inverted Routing",
+   "year": 2022,
+   "venue": "NeurIPS",
+   "cited_by": 480,
+   "first_author": "Yusuf Zaman",
+   "n_authors": 3,
+   "type": "article",
+   "oa_url": "",
+   "retracted": false,
+   "referenced_works": []
+  },
+  "W12": {
+   "id": "W12",
+   "doi": "10.1000/edge.2025",
+   "title": "Sparse Expert Routing for Edge Inference",
+   "year": 2025,
+   "venue": "arXiv",
+   "cited_by": 3,
+   "first_author": "Amina Diallo",
+   "n_authors": 3,
+   "type": "preprint",
+   "oa_url": "https://example.org/12",
+   "retracted": false,
+   "referenced_works": []
+  }
+ },
+ "edges": [
+  {
+   "seed": "W2000000001",
+   "work": "W1",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W2",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W3",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W4",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W5",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W9",
+   "direction": "forward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W7",
+   "direction": "forward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W2000000002",
+   "direction": "forward"
+  },
+  {
+   "seed": "W2000000001",
+   "work": "W8",
+   "direction": "forward"
+  },
+  {
+   "seed": "W2000000002",
+   "work": "W3",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000002",
+   "work": "W4",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000002",
+   "work": "W6",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000002",
+   "work": "W2000000001",
+   "direction": "backward"
+  },
+  {
+   "seed": "W2000000002",
+   "work": "W8",
+   "direction": "forward"
+  },
+  {
+   "seed": "W2000000002",
+   "work": "W10",
+   "direction": "forward"
+  },
+  {
+   "seed": "W2000000002",
+   "work": "W11",
+   "direction": "forward"
+  }
+ ],
+ "search_record": [
+  {
+   "db": "OpenAlex",
+   "query": "cites:W2000000001 since 2019",
+   "date": "2026-11-01",
+   "hits": 4
+  },
+  {
+   "db": "OpenAlex",
+   "query": "cites:W2000000002 since 2019",
+   "date": "2026-11-01",
+   "hits": 3
+  },
+  {
+   "db": "OpenAlex",
+   "query": "search='sparse expert routing' since 2019 type:article|preprint",
+   "date": "2026-11-01",
+   "hits": 3
+  }
+ ],
+ "args": {
+  "since": 2019,
+  "seeds": [
+   "W2000000001",
+   "10.1000/routing.2021"
+  ],
+  "search": [
+   "sparse expert routing"
+  ]
+ }
+}

@@ -1,0 +1,202 @@
+{
+ "https://api.openalex.org/works?filter=title.search:attention%20is%20all%20you%20need&per-page=5": {
+  "status": "ok",
+  "body": {
+   "meta": {
+    "count": 1
+   },
+   "results": [
+    {
+     "id": "https://openalex.org/W1",
+     "title": "Attention Is All You Need",
+     "display_name": "Attention Is All You Need",
+     "publication_year": 2017,
+     "doi": null,
+     "type": "article",
+     "is_retracted": false,
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Ashish Vaswani"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "Advances in Neural Information Processing Systems"
+      }
+     }
+    }
+   ]
+  }
+ },
+ "https://api.crossref.org/works/10.1109/CVPR.2016.90": {
+  "status": "ok",
+  "body": {
+   "status": "ok",
+   "message": {
+    "DOI": "10.1109/cvpr.2016.90",
+    "type": "proceedings-article",
+    "title": [
+     "Deep Residual Learning for Image Recognition"
+    ],
+    "author": [
+     {
+      "given": "Kaiming",
+      "family": "He"
+     },
+     {
+      "given": "Xiangyu",
+      "family": "Zhang"
+     }
+    ],
+    "issued": {
+     "date-parts": [
+      [
+       2016,
+       6
+      ]
+     ]
+    },
+    "container-title": [
+     "2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)"
+    ]
+   }
+  }
+ },
+ "https://api.openalex.org/works/doi:10.1109/cvpr.2016.90": {
+  "status": "ok",
+  "body": {
+   "id": "https://openalex.org/W1",
+   "title": "Deep Residual Learning for Image Recognition",
+   "display_name": "Deep Residual Learning for Image Recognition",
+   "publication_year": 2016,
+   "doi": "https://doi.org/10.1109/cvpr.2016.90",
+   "type": "article",
+   "is_retracted": false,
+   "authorships": [
+    {
+     "author": {
+      "display_name": "Kaiming He"
+     }
+    }
+   ],
+   "primary_location": {
+    "source": {
+     "display_name": "CVPR"
+    }
+   }
+  }
+ },
+ "https://export.arxiv.org/api/query?id_list=1810.04805": {
+  "status": "ok",
+  "body": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<feed xmlns=\"http://www.w3.org/2005/Atom\"><entry>\n<id>http://arxiv.org/abs/1810.04805v2</id>\n<published>2018-10-11T00:50:01Z</published>\n<title>BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding</title>\n<author><name>Jacob Devlin</name></author><author><name>Ming-Wei Chang</name></author>\n</entry></feed>"
+ },
+ "https://api.semanticscholar.org/graph/v1/paper/arXiv:1810.04805?fields=title,year,authors,venue,externalIds": {
+  "status": "ok",
+  "body": {
+   "paperId": "df2b0e26d0599ce3e70df8a9da02e51594e0e992",
+   "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+   "year": 2019,
+   "venue": "North American Chapter of the Association for Computational Linguistics",
+   "authors": [
+    {
+     "name": "Jacob Devlin"
+    }
+   ],
+   "externalIds": {
+    "ArXiv": "1810.04805",
+    "DOI": "10.18653/v1/N19-1423"
+   }
+  }
+ },
+ "https://api.openalex.org/works?filter=title.search:sparse%20expert%20routing%20for%20efficient%20continual%20adaptation&per-page=5": {
+  "status": "ok",
+  "body": {
+   "meta": {
+    "count": 1
+   },
+   "results": [
+    {
+     "id": "https://openalex.org/W1",
+     "title": "Sparse Mixture-of-Experts for Continual Learning",
+     "display_name": "Sparse Mixture-of-Experts for Continual Learning",
+     "publication_year": 2022,
+     "doi": null,
+     "type": "article",
+     "is_retracted": false,
+     "authorships": [
+      {
+       "author": {
+        "display_name": "Li Chen"
+       }
+      }
+     ],
+     "primary_location": {
+      "source": {
+       "display_name": "ICLR"
+      }
+     }
+    }
+   ]
+  }
+ },
+ "https://api.crossref.org/works/10.5555/jals.2021.0042": {
+  "status": "ok",
+  "body": {
+   "status": "ok",
+   "message": {
+    "DOI": "10.5555/jals.2021.0042",
+    "type": "journal-article",
+    "title": [
+     "Gradient Echo Regularisation Eliminates Overfitting in Deep Networks"
+    ],
+    "author": [
+     {
+      "given": "Tomasz",
+      "family": "Nowak"
+     },
+     {
+      "given": "Sara",
+      "family": "Lindqvist"
+     }
+    ],
+    "issued": {
+     "date-parts": [
+      [
+       2021,
+       3
+      ]
+     ]
+    },
+    "container-title": [
+     "Journal of Applied Learning Systems"
+    ]
+   }
+  }
+ },
+ "https://api.openalex.org/works/doi:10.5555/jals.2021.0042": {
+  "status": "ok",
+  "body": {
+   "id": "https://openalex.org/W1",
+   "title": "Gradient Echo Regularisation Eliminates Overfitting in Deep Networks",
+   "display_name": "Gradient Echo Regularisation Eliminates Overfitting in Deep Networks",
+   "publication_year": 2021,
+   "doi": "https://doi.org/10.5555/jals.2021.0042",
+   "type": "article",
+   "is_retracted": true,
+   "authorships": [
+    {
+     "author": {
+      "display_name": "Tomasz Nowak"
+     }
+    }
+   ],
+   "primary_location": {
+    "source": {
+     "display_name": "Journal of Applied Learning Systems"
+    }
+   }
+  }
+ }
+}

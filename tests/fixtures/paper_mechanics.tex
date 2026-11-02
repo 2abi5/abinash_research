@@ -1,0 +1,25 @@
+\documentclass{article}
+\begin{document}
+\begin{abstract}
+Sparse expert routing cuts inference cost~\cite{vaswani2017attention}, but per-layer
+gates commit before the discriminative features exist~\cite{he2016resnet}.
+\end{abstract}
+
+\section{Introduction}
+Conditional computation activates a subset of parameters per input. The dominant
+approach gates each layer independently \cite{vaswani2017attention}. This works when
+the information that determines the right expert is already present at that layer.
+In \cite{he2016resnet} the authors show that residual connections ease optimisation.
+Routing has been studied widely \cite{vaswani2017attention,he2016resnet,devlin2018bert,retracted2021example}.
+Gradient echo regularisation eliminates overfitting entirely~\cite{retracted2021example}.
+\cite{devlin2018bert} propose bidirectional pretraining. Masked objectives transfer.~\cite{devlin2018bert}
+
+\section{Related Work}
+\subsection{Routing}
+Per-layer routing~\cite{vaswani2017attention} and magnitude pruning~\cite{he2016resnet}
+share one assumption: the signal that matters is visible where the decision is made.
+
+\section{Method}
+We resize images to 224 pixels following~\cite{he2016resnet}. This sentence is not
+load-bearing and should not appear in the default worklist.
+\end{document}

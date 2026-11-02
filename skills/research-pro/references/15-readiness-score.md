@@ -96,7 +96,7 @@ Any one of these forces `NOT READY` at any score:
 
 | Gate | Condition |
 |---|---|
-| G-CITE | Any reference unverifiable, or any `MISMATCH` unresolved |
+| G-CITE | Any reference `UNVERIFIED`, `RETRACTED` or `MISMATCH`; any preprint with a published version not upgraded; any load-bearing citation without a ledger location |
 | G-CLAIM | Any abstract or introduction claim with no supporting evidence |
 | G-VENUE | Any live desk-reject trigger: page limit, missing required section or checklist, anonymity leak, template violation |
 | G-ETHICS | Required ethics/IRB approval absent where human subjects or restricted data are involved |

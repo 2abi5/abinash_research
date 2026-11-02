@@ -195,6 +195,10 @@ Status: supported · needs-evidence · unsupported
 | Table/Figure | results/ file | config | commit |
 |---|---|---|---|
 
+## Citation layer-3 log (claim support)
+| Key | Claim it supports | Where in the source |
+|---|---|---|
+
 ## Gates
 | Gate | Stage | Status | Blocking issues |
 |---|---|---|---|
@@ -232,7 +236,7 @@ VENUE  ?= {args.venue or 'neurips'}
 MAIN   ?= main
 TARGET_PT ?= 237     # one column of a two-column paper
 
-.PHONY: pdf check cites prose figs lint venue score tokens tables clean overleaf-pull overleaf-push
+.PHONY: pdf check cites prose figs lint venue score tokens tables lit clean overleaf-pull overleaf-push
 
 pdf:
 \tlatexmk -pdf -interaction=nonstopmode $(MAIN).tex
@@ -248,7 +252,10 @@ lint:
 
 cites:
 \tpython3 $(S)/verify_citations.py refs.bib --tex $(MAIN).tex sections/*.tex \\
-\t  --report out/citations.md --no-strict
+\t  --ledger LEDGER.md --cache .cite_cache.json --report out/citations.md --no-strict
+
+lit:   # SEEDS="10.1000/a 10.1000/b" make lit
+\tpython3 $(S)/lit_scan.py $(foreach s,$(SEEDS),--seed $(s)) --out lit/
 
 prose:
 \tpython3 $(S)/prose_metrics.py $(MAIN).tex --no-strict

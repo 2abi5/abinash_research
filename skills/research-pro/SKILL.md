@@ -17,8 +17,8 @@ description: >-
   AI-use disclosure; or ask whether a paper is ready to submit.
 license: MIT
 metadata:
-  version: "1.0.0"
-  last_verified: "2026-09-30"
+  version: "1.1.0"
+  last_verified: "2026-11-01"
 ---
 
 # Research Pro
@@ -68,11 +68,11 @@ time.
 | The user wants | Go to | Read |
 |---|---|---|
 | To start a paper from scratch | S0 → S1 | `references/01-intake.md`, `references/02-architecture.md` |
-| A topic surveyed / prior art mapped | S2 | `references/03-literature-review.md` |
+| A topic surveyed / prior art mapped | S2 | `references/03-literature-review.md`, then `scripts/lit_scan.py` |
 | To know what experiments they need | S3 | `references/06-experiments.md`, `references/07-results-and-stats.md` |
 | A section drafted or rewritten | S4 | the one section file (table below) |
 | A figure, diagram, or table | S5 | `references/11-figures-tables.md` |
-| References checked | S6 | `references/13-citation-integrity.md` |
+| References checked | S6 | `references/13-citation-integrity.md`; run `scripts/verify_citations.py` with `--tex` and `--ledger` |
 | Prose that reads like a person wrote it | S7 | `references/12-prose-quality.md` |
 | Venue rules / page limit / format check | S8 | `references/14-venue-compliance.md` + `venues/<venue>.md` |
 | A hostile pre-submission review | S9 | the `paper-reviewer` skill |
@@ -159,8 +159,10 @@ All are stdlib-only Python 3.9+ and degrade to offline mode without network.
 S=skills/research-pro/scripts
 
 python3 $S/new_paper.py  --title "..." --venue neurips --out paper/   # S1 scaffold
-python3 $S/verify_citations.py paper/refs.bib --report out/cites.md   # S6
-python3 $S/prose_metrics.py paper/main.tex                            # S7
+python3 $S/lit_scan.py --seed <doi> --seed <doi> --since 2020 --out lit/  # S2 scoping scan
+python3 $S/verify_citations.py paper/refs.bib --tex paper/main.tex paper/sections/*.tex \
+        --ledger paper/LEDGER.md --report out/cites.md                 # S6
+python3 $S/prose_metrics.py paper/main.tex --paragraphs               # S7
 python3 $S/figure_audit.py paper/figures/                             # S5
 python3 $S/latex_lint.py paper/main.tex --venue neurips               # S8
 python3 $S/venue_check.py --venue neurips --paper paper/main.tex      # S8
@@ -171,8 +173,10 @@ python3 $S/exemplar_profile.py paper/main.tex --compare paper/exemplar_profile.j
 ```
 
 Each takes `--help`. `verify_citations.py` needs outbound access to
-`api.crossref.org`, `api.openalex.org`, `api.semanticscholar.org`, and
-`export.arxiv.org`; without them it runs structural checks only and says so.
+`api.crossref.org`, `api.openalex.org`, `api.semanticscholar.org`, `dblp.org` and
+`export.arxiv.org`; without them it runs structural checks only and reports
+`BLOCKED`. `lit_scan.py` needs `api.openalex.org`. Both take `--cache` (so weekly
+checks do not re-ask the network) and `--replay` (recorded answers, for tests).
 
 ## Deliverable shape
 
